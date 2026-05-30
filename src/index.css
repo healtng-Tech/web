@@ -1,0 +1,49 @@
+@import "tailwindcss";
+
+@theme {
+  /* ─── Marca ──────────────────────────────────────────────── */
+  --color-brand:        #002EE5;
+  --color-brand-light:  #E8EFFF;
+  --color-brand-mid:    #3375FF;
+
+  /* ─── Grises de sistema ──────────────────────────────────── */
+  --color-ink:           #0A0E1A;
+  --color-ink-secondary: #3D4458;
+  --color-ink-tertiary:  #6B7592;
+  --color-border:        #E4E8F0;
+  --color-surface:       #F7F8FB;
+  --color-white:         #FFFFFF;
+
+  /* ─── Semánticos de estado ───────────────────────────────── */
+  --color-success:       #00A878;
+  --color-warning:       #F59E0B;
+  --color-danger:        #EF4444;
+
+  /* ─── Blobs de fondo (gradiente hero) ───────────────────── */
+  --color-blob-blue:     #C7D9FF;
+  --color-blob-violet:   #E0D4FF;
+  --color-blob-cyan:     #C8F0F4;
+
+  /* ─── Tipografías ────────────────────────────────────────── */
+  --font-sans:  'Manrope', sans-serif;
+  --font-inter: 'Inter', sans-serif;
+
+  /* ─── Sombras de sistema ─────────────────────────────────── */
+  --shadow-card:    0 2px 12px 0 rgba(10, 14, 26, 0.06);
+  --shadow-card-lg: 0 8px 40px 0 rgba(10, 14, 26, 0.10);
+  --shadow-float:   0 24px 64px 0 rgba(10, 14, 26, 0.14);
+
+  /* ─── Alias legacy ───────────────────────────────────────── */
+  --color-healtng-azul: #0055FF;
+}
+
+/* ─── Estilos Base (Fuera del tema) ───────────────────────── */
+@layer base {
+  body {
+    @apply bg-white text-ink font-sans antialiased selection:bg-brand-light;
+  }
+
+  h1, h2, h3, h4, h5, h6 {
+    @apply font-sans tracking-tight text-ink;
+  }
+}
