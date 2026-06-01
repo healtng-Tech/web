@@ -169,7 +169,7 @@ function App() {
                   </div>
 
                   <div className="space-y-2">
-                    <h5 className="font-bold text-slate-800 uppercase tracking-wider text-[12px]">C. Cláusula de Indemnización (Hold Harmless)</h5>
+                    <h5 className="font-bold text-slate-800 uppercase tracking-wider text-[12px]">C. Cláusula de Indemnización</h5>
                     <p>
                       Todos los usuarios (pacientes, profesionales y comercios) se comprometen expresamente a indemnizar y mantener indemne a HEALTNG ante cualquier reclamo, demanda, pérdida, costo o gasto (incluyendo honorarios legales) derivado de un uso indebido de la plataforma, negligencia profesional, fraude o fallas en la calidad de los productos ofertados.
                     </p>
