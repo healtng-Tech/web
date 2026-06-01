@@ -66,7 +66,7 @@ function App() {
         </div>
       )}
 
-      {/* ─── Modal de Documentos Legales (Trust Design) ───────────────────── */}
+      {/* ─── Modal de Documentos Legales (Trust Design + Responsive) ──────── */}
       {legalModal.open && (
         <div
           role="dialog"
@@ -75,7 +75,7 @@ function App() {
           onClick={handleCloseLegal}
         >
           <div 
-            className="bg-white rounded-3xl shadow-2xl border border-slate-100 max-w-3xl w-full max-h-[85vh] overflow-y-auto p-8 md:p-10" 
+            className="bg-white rounded-3xl shadow-2xl border border-slate-100 max-w-3xl w-full max-h-[85vh] overflow-y-auto p-5 sm:p-8 md:p-10" 
             onClick={(e) => e.stopPropagation()}
           >
             {/* Header del Modal */}
@@ -169,9 +169,9 @@ function App() {
                   </div>
 
                   <div className="space-y-2">
-                    <h5 className="font-bold text-slate-800 uppercase tracking-wider text-[12px]">C. Cláusula de Indemnización</h5>
+                    <h5 className="font-bold text-slate-800 uppercase tracking-wider text-[12px]">C. Cláusula de Indemnización (Hold Harmless)</h5>
                     <p>
-                      Todos los usuarios (pacientes, profesionales y comercios) se comprometen expresamente a indemnizar y mantener indemne a HEALTNG ante cualquier reclamo, demanda, pérdida, costo o gasto (incluyendo honorarios legales) derivado de un uso indebido de la plataforma, negligence profesional, fraude o fallas en la calidad de los productos ofertados.
+                      Todos los usuarios (pacientes, profesionales y comercios) se comprometen expresamente a indemnizar y mantener indemne a HEALTNG ante cualquier reclamo, demanda, pérdida, costo o gasto (incluyendo honorarios legales) derivado de un uso indebido de la plataforma, negligencia profesional, fraude o fallas en la calidad de los productos ofertados.
                     </p>
                   </div>
 
@@ -184,11 +184,11 @@ function App() {
                 </>
               )}
 
-              {/* CASO 3: AUDITORÍA Y SEGURIDAD */}
+              {/* CASO 3: AUDITORÍA Y SEGURIDAD (OPTIMIZADO RESPONSIVE) */}
               {legalModal.type === 'security' && (
                 <>
                   <div>
-                    <h4 className="font-bold text-slate-900 text-base">Política de Supervisión Extterna, Seguridad y Régimen Sancionatorio</h4>
+                    <h4 className="font-bold text-slate-900 text-base">Política de Supervisión Externa, Seguridad y Régimen Sancionatorio</h4>
                     <p className="text-xs text-slate-400 font-mono mt-1">Monitoreo de Infraestructura Activa</p>
                   </div>
                   <p>
@@ -209,8 +209,44 @@ function App() {
                     <h5 className="font-bold text-slate-800 uppercase tracking-wider text-[12px]">B. Matriz de Consecuencias e Incumplimiento</h5>
                     <p>Cualquier violación a nuestras políticas de seguridad, términos de servicio o normativa legal vigente activará de forma inmediata un procedimiento sancionatorio estructurado en tres niveles:</p>
                     
-                    {/* Tabla Corporativa de Tailwind */}
-                    <div className="border border-slate-100 rounded-xl overflow-hidden mt-3 shadow-sm">
+                    {/* ──── VISTA MÓVIL: Micro-tarjetas verticales (block md:hidden) ──── */}
+                    <div className="block md:hidden space-y-4 mt-4">
+                      {/* Tarjeta Nivel 1 */}
+                      <div className="bg-slate-50/50 border border-slate-100 rounded-xl p-4 space-y-2.5">
+                        <div className="flex justify-between items-center">
+                          <span className="font-bold text-slate-900 text-[14px]">Nivel 1</span>
+                          <span className="px-2 py-0.5 rounded bg-blue-50 text-blue-700 font-semibold text-[10px]">Preventivo</span>
+                        </div>
+                        <p className="text-slate-600 text-[13px] leading-relaxed">
+                          Emisión de una advertencia formal o notificación escrita detallando la irregularidad, otorgando un plazo perentorio para su subsanación.
+                        </p>
+                      </div>
+
+                      {/* Tarjeta Nivel 2 */}
+                      <div className="bg-slate-50/50 border border-slate-100 rounded-xl p-4 space-y-2.5">
+                        <div className="flex justify-between items-center">
+                          <span className="font-bold text-slate-900 text-[14px]">Nivel 2</span>
+                          <span className="px-2 py-0.5 rounded bg-amber-50 text-amber-700 font-semibold text-[10px]">Correctivo</span>
+                        </div>
+                        <p className="text-slate-600 text-[13px] leading-relaxed">
+                          Restricción temporal de funcionalidades clave en la plataforma o suspensión del perfil y retiro inmediato de la visibilidad pública en el buscador.
+                        </p>
+                      </div>
+
+                      {/* Tarjeta Nivel 3 */}
+                      <div className="bg-slate-50/50 border border-slate-100 rounded-xl p-4 space-y-2.5">
+                        <div className="flex justify-between items-center">
+                          <span className="font-bold text-slate-900 text-[14px]">Nivel 3</span>
+                          <span className="px-2 py-0.5 rounded bg-rose-50 text-rose-700 font-semibold text-[10px]">Definitivo</span>
+                        </div>
+                        <p className="text-slate-600 text-[13px] leading-relaxed">
+                          Eliminación permanente de la cuenta, terminación definitiva del contrato, bloqueo de accesos y, de ser procedente, ejercicio de acciones civiles, penales o reportes formales ante autoridades sanitarias y gremiales.
+                        </p>
+                      </div>
+                    </div>
+
+                    {/* ──── VISTA DESKTOP: Tabla Tradicional (hidden md:block) ──── */}
+                    <div className="hidden md:block border border-slate-100 rounded-xl overflow-hidden mt-3 shadow-sm">
                       <table className="min-w-full divide-y divide-slate-100 text-left text-xs">
                         <thead className="bg-slate-50 font-bold text-slate-700">
                           <tr>
@@ -247,7 +283,7 @@ function App() {
             <div className="mt-8 pt-4 border-t border-slate-100 flex justify-end">
               <button 
                 onClick={handleCloseLegal} 
-                className="px-5 py-2 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition-colors"
+                className="px-5 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition-colors w-full sm:w-auto"
               >
                 Entendido
               </button>
