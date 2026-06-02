@@ -169,14 +169,24 @@ function App() {
                   </div>
 
                   <div className="space-y-2">
-                    <h5 className="font-bold text-slate-800 uppercase tracking-wider text-[12px]">C. Cláusula de Indemnización</h5>
+                    <h5 className="font-bold text-slate-800 uppercase tracking-wider text-[12px]">C. Propiedad Intelectual y Derechos de Autor</h5>
+                    <p>
+                      El software, código fuente, algoritmos, interfaces visuales, arquitectura del sistema y la estructura de la base de datos que dan vida a la plataforma HEALTNG se encuentran debidamente protegidos bajo la Ley sobre el Derecho de Autor de la República Bolivariana de Venezuela, bajo el Certificado de Registro Electrónico N° DAR/VE/20276 emitido por el Servicio Autónomo de la Propiedad Intelectual (SAPI).
+                    </p>
+                    <p>
+                      Asimismo, la denominación, el diseño de la interfaz, los logotipos e isotipos corporativos de "HEALTNG" constituyen propiedad exclusiva de su creador y están protegidos como obras visuales, gráficas y de diseño bajo la normativa de propiedad intelectual y competencia desleal. Queda estrictamente prohibido el uso no autorizado de su identidad comercial, nombre o elementos gráficos que puedan causar confusión en el mercado o asociarse indebidamente a terceros. Cualquier infracción será perseguida civil y penalmente.
+                    </p>
+                  </div>
+
+                  <div className="space-y-2">
+                    <h5 className="font-bold text-slate-800 uppercase tracking-wider text-[12px]">D. Cláusula de Indemnización</h5>
                     <p>
                       Todos los usuarios (pacientes, profesionales y comercios) se comprometen expresamente a indemnizar y mantener indemne a HEALTNG ante cualquier reclamo, demanda, pérdida, costo o gasto (incluyendo honorarios legales) derivado de un uso indebido de la plataforma, negligencia profesional, fraude o fallas en la calidad de los productos ofertados.
                     </p>
                   </div>
 
                   <div className="space-y-2">
-                    <h5 className="font-bold text-slate-800 uppercase tracking-wider text-[12px]">D. Ley Aplicable y Jurisdicción</h5>
+                    <h5 className="font-bold text-slate-800 uppercase tracking-wider text-[12px]">E. Ley Aplicable y Jurisdicción</h5>
                     <p>
                       Para la interpretación y resolución de cualquier conflicto derivado de estos términos, las partes renuncian expresamente a cualquier otro fuero y se someten formalmente a la mediación y a los Juzgados y Tribunales competentes de la ciudad de Valencia, Estado Carabobo, República Bolivariana de Venezuela.
                     </p>
@@ -184,7 +194,7 @@ function App() {
                 </>
               )}
 
-              {/* CASO 3: AUDITORÍA Y SEGURIDAD (OPTIMIZADO RESPONSIVE) */}
+              {/* CASO 3: AUDITORÍA Y SEGURIDAD */}
               {legalModal.type === 'security' && (
                 <>
                   <div>
@@ -201,7 +211,7 @@ function App() {
                     <ul className="list-disc pl-5 space-y-1">
                       <li><strong className="text-slate-900">Verificación de Idoneidad:</strong> Validación documental de las credenciales, títulos y permisos sanitarios de médicos, clínicas y farmacias aliados.</li>
                       <li><strong className="text-slate-900">Trazabilidad Operativa:</strong> Auditoría de plazos de entrega de productos y cumplimiento de citas agendadas.</li>
-                      <li><strong className="text-slate-900">Security Informática:</strong> Monitoreo y registro de accesos (logs) para asegurar el uso legítimo de las herramientas de diagnóstico y resguardo de datos sensibles.</li>
+                      <li><strong className="text-slate-900">Seguridad Informática:</strong> Monitoreo y registro de accesos (logs) para asegurar el uso legítimo de las herramientas de diagnóstico y resguardo de datos sensibles.</li>
                     </ul>
                   </div>
 
@@ -209,9 +219,8 @@ function App() {
                     <h5 className="font-bold text-slate-800 uppercase tracking-wider text-[12px]">B. Matriz de Consecuencias e Incumplimiento</h5>
                     <p>Cualquier violación a nuestras políticas de seguridad, términos de servicio o normativa legal vigente activará de forma inmediata un procedimiento sancionatorio estructurado en tres niveles:</p>
                     
-                    {/* ──── VISTA MÓVIL: Micro-tarjetas verticales (block md:hidden) ──── */}
+                    {/* VISTA MÓVIL */}
                     <div className="block md:hidden space-y-4 mt-4">
-                      {/* Tarjeta Nivel 1 */}
                       <div className="bg-slate-50/50 border border-slate-100 rounded-xl p-4 space-y-2.5">
                         <div className="flex justify-between items-center">
                           <span className="font-bold text-slate-900 text-[14px]">Nivel 1</span>
@@ -222,7 +231,6 @@ function App() {
                         </p>
                       </div>
 
-                      {/* Tarjeta Nivel 2 */}
                       <div className="bg-slate-50/50 border border-slate-100 rounded-xl p-4 space-y-2.5">
                         <div className="flex justify-between items-center">
                           <span className="font-bold text-slate-900 text-[14px]">Nivel 2</span>
@@ -233,7 +241,6 @@ function App() {
                         </p>
                       </div>
 
-                      {/* Tarjeta Nivel 3 */}
                       <div className="bg-slate-50/50 border border-slate-100 rounded-xl p-4 space-y-2.5">
                         <div className="flex justify-between items-center">
                           <span className="font-bold text-slate-900 text-[14px]">Nivel 3</span>
@@ -245,7 +252,7 @@ function App() {
                       </div>
                     </div>
 
-                    {/* ──── VISTA DESKTOP: Tabla Tradicional (hidden md:block) ──── */}
+                    {/* VISTA DESKTOP */}
                     <div className="hidden md:block border border-slate-100 rounded-xl overflow-hidden mt-3 shadow-sm">
                       <table className="min-w-full divide-y divide-slate-100 text-left text-xs">
                         <thead className="bg-slate-50 font-bold text-slate-700">
