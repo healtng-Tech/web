@@ -5,11 +5,12 @@ import { Footer } from './components/layout/Footer';
 import { Hero } from './components/sections/Hero';
 import { ProblemStatement } from './components/sections/ProblemStatement';
 
-// Importaciones desde tu carpeta de landing (usando el index.js)
+// Importaciones desde tu carpeta de landing (incluyendo la nueva sección)
 import {
   InfrastructureSection,
   PartnersSection,
   FeaturesShowcase,
+  FoundersSection, // <-- Agregado
   ResourcesSection,
   FinalCTA,
 } from './components/landing';
@@ -33,6 +34,10 @@ function App() {
         <ProblemStatement />
         <InfrastructureSection />
         <FeaturesShowcase />
+        
+        {/* ─── Renderizado de la Cohorte de Médicos Piloto ─── */}
+        <FoundersSection /> 
+        
         <PartnersSection />
         <ResourcesSection />
         <FinalCTA onOpenModal={handleOpenModal} />
@@ -115,7 +120,7 @@ function App() {
                   
                   <div className="space-y-2">
                     <h5 className="font-bold text-slate-800 uppercase tracking-wider text-[12px]">A. Marco Legal Aplicable</h5>
-                    <p>Nuestras operaciones y el tratamiento de bases de datos están estrictamente blindados bajo el ordenamiento jurídico de la República Bolivariana de Venezuela, de conformidad con:</p>
+                    <p>Nuestras operaciones y el tratamiento de bases de datos están estrictamente blindados bajo el ordenamiento jurídico de la República Balivariana de Venezuela, de conformidad con:</p>
                     <ul className="list-disc pl-5 space-y-1 text-slate-600">
                       <li>La Ley de Protección de Datos (Gaceta Oficial N° 37.313).</li>
                       <li>La Ley contra los Delitos Informáticos (Gaceta Oficial N° 37.313).</li>
