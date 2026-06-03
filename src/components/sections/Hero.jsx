@@ -48,7 +48,7 @@ export const Hero = memo(function Hero() {
             ].join(' ')}
           >
             <span className="size-1.5 rounded-full bg-brand animate-pulse" aria-hidden="true" />
-            Tu salud · Sin vueltas
+           La evolución de la gestión médica
           </div>
 
           {/* H1: Humano y Directo */}
@@ -60,9 +60,9 @@ export const Hero = memo(function Hero() {
               'mb-6 max-w-3xl',
             ].join(' ')}
           >
-            Gestione su consulta.{' '}
+            Toda su práctica clínica,{' '}
             <span className="text-brand block sm:inline">
-              Conecte su farmacia en un solo lugar.
+              sincronizada en un solo ecosistema.
             </span>
           </h1>
 
@@ -74,7 +74,7 @@ export const Hero = memo(function Hero() {
               'max-w-2xl mb-10 font-normal',
             ].join(' ')}
           >
-            Sincronice su consulta con clínicas, laboratorios y las farmacias de la zona. 
+            Conecte su consulta con clínicas, laboratorios y las farmacias de la zona.
             Emita recetas digitales verificadas y reciba los pagos directamente sin trámites adicionales.
           </p>
 
