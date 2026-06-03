@@ -35,19 +35,19 @@ export function Navbar() {
 
   return (
     <>
-      <header className={`fixed top-0 inset-x-0 z-40 transition-all duration-300 ease-out ${scrolled ? 'bg-white/90 backdrop-blur-md border-b border-border shadow-card' : 'bg-transparent'}`}>
+      <header className={`fixed top-0 inset-x-0 z-40 transition-all duration-300 ease-out ${scrolled ? 'bg-white/90 backdrop-blur-md border-b border-slate-200/60 shadow-sm' : 'bg-transparent'}`}>
         <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
           
-          {/* Logo solo */}
+          {/* Logo equilibrado a una altura óptica de h-7 (28px) */}
           <a href="/" aria-label="Healtng — inicio" className="flex items-center select-none group">
-            <Logo className="h-10 w-auto" />
+            <Logo className="h-7 w-auto transition-transform duration-200 active:scale-[0.98]" />
           </a>
 
           {/* Links desktop */}
           <ul className="hidden md:flex items-center gap-1">
             {NAV_LINKS.map(({ label, href }) => (
               <li key={href}>
-                <a href={href} className="px-4 py-2 rounded-full text-[13px] font-medium text-ink-secondary transition-colors duration-150 hover:text-ink hover:bg-surface">
+                <a href={href} className="px-4 py-2 rounded-full text-[13px] font-semibold text-slate-600 transition-colors duration-150 hover:text-slate-900 hover:bg-slate-50">
                   {label}
                 </a>
               </li>
@@ -55,16 +55,16 @@ export function Navbar() {
           </ul>
 
           <div className="hidden md:flex items-center gap-3">
-            <a href="https://app.healtng.com/login" className="px-4 py-2 rounded-full text-[13px] font-medium text-ink-secondary transition-colors duration-150 hover:text-ink hover:bg-surface">
+            <a href="https://app.healtng.com/login" className="px-4 py-2 rounded-full text-[13px] font-semibold text-slate-600 transition-colors duration-150 hover:text-slate-900 hover:bg-slate-50">
               Inicia sesión
             </a>
             <NavCTA />
           </div>
 
           {/* Mobile Hamburger */}
-          <button type="button" onClick={() => setMobileOpen(v => !v)} className="md:hidden size-10 rounded-xl hover:bg-surface flex flex-col justify-center items-center gap-[5px]">
+          <button type="button" onClick={() => setMobileOpen(v => !v)} className="md:hidden size-10 rounded-xl hover:bg-slate-50 flex flex-col justify-center items-center gap-[5px]" aria-label="Abrir menú">
             {[0, 1, 2].map(i => (
-              <span key={i} className={`block h-[1.5px] bg-ink rounded-full transition-all ${i === 0 && mobileOpen ? 'w-5 translate-y-[6.5px] rotate-45' : 'w-5'} ${i === 1 && mobileOpen ? 'w-5 opacity-0' : 'w-4'} ${i === 2 && mobileOpen ? 'w-5 -translate-y-[6.5px] -rotate-45' : 'w-5'}`} />
+              <span key={i} className={`block h-[1.5px] bg-slate-900 rounded-full transition-all ${i === 0 && mobileOpen ? 'w-5 translate-y-[6.5px] rotate-45' : 'w-5'} ${i === 1 && mobileOpen ? 'w-5 opacity-0' : 'w-4'} ${i === 2 && mobileOpen ? 'w-5 -translate-y-[6.5px] -rotate-45' : 'w-5'}`} />
             ))}
           </button>
         </nav>
@@ -74,15 +74,15 @@ export function Navbar() {
       <div className={`fixed inset-0 z-30 md:hidden flex flex-col pt-16 bg-white/95 backdrop-blur-xl transition-all duration-300 ease-out ${mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
         <nav className="flex flex-col gap-1 px-6 pt-6">
           {NAV_LINKS.map(({ label, href }) => (
-            <a key={href} href={href} onClick={() => setMobileOpen(false)} className="px-4 py-3.5 rounded-xl text-[15px] font-medium text-ink hover:bg-surface transition-colors">
+            <a key={href} href={href} onClick={() => setMobileOpen(false)} className="px-4 py-3.5 rounded-xl text-[15px] font-semibold text-slate-800 hover:bg-slate-50 transition-colors">
               {label}
             </a>
           ))}
-          <div className="mt-4 pt-4 border-t border-border flex flex-col gap-3">
-            <a href="https://app.healtng.com/login" onClick={() => setMobileOpen(false)} className="px-4 py-3.5 rounded-xl text-[15px] font-medium text-ink-secondary hover:bg-surface transition-colors">
+          <div className="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3">
+            <a href="https://app.healtng.com/login" onClick={() => setMobileOpen(false)} className="px-4 py-3.5 rounded-xl text-[15px] font-semibold text-slate-500 hover:bg-slate-50 transition-colors">
               Inicia sesión
             </a>
-            <a href="https://app.healtng.com/login?action=register" onClick={() => setMobileOpen(false)} className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-brand text-white text-[15px] font-semibold hover:bg-brand/90 transition-colors">
+            <a href="https://app.healtng.com/login?action=register" onClick={() => setMobileOpen(false)} className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-brand text-white text-[15px] font-bold hover:bg-brand/90 transition-colors shadow-sm">
               Iniciar Demo
             </a>
           </div>
