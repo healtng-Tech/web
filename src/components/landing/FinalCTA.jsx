@@ -76,7 +76,7 @@ export const FinalCTA = memo(function FinalCTA() {
         <div className="relative z-10 max-w-4xl mx-auto px-6 py-20 md:py-28 flex flex-col items-center text-center gap-8">
           <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-white/80 border border-slate-300/50 text-slate-800 text-[11px] font-bold tracking-widest uppercase font-mono shadow-sm">
             <span className="size-1.5 rounded-full bg-[#002EE5] animate-pulse" aria-hidden="true" />
-            Piloto Activo · Carabobo 2026 · Plazas Limitadas
+            Plazas Limitadas
           </div>
 
           <h2 id="cta-heading" className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-slate-900 tracking-[-0.03em] leading-[1.08] max-w-3xl">
@@ -92,7 +92,7 @@ export const FinalCTA = memo(function FinalCTA() {
               <div className="py-6 flex flex-col items-center gap-3 animate-in fade-in zoom-in-95 duration-300">
                 <div className="size-12 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 text-xl font-bold shadow-sm">✓</div>
                 <h3 className="text-lg font-bold text-slate-900 mt-2">Solicitud recibida correctamente</h3>
-                <p className="text-sm text-slate-500 max-w-xs">Un Arquitecto Clínico se comunicará vía WhatsApp en las próximas horas para gestionar sus accesos de prueba.</p>
+                <p className="text-sm text-slate-500 max-w-xs">Nuestro agente se comunicará vía WhatsApp en las próximas horas para gestionar sus accesos de prueba.</p>
               </div>
             ) : (
               <form onSubmit={handleSubmit} className="flex flex-col gap-4">
