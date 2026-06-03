@@ -1,155 +1,145 @@
-import React from 'react';
+import React, { memo } from 'react';
 import { GradientBlob } from '../ui/GradientBlob';
-// Importación correcta de DashboardGrid
 import { DashboardGrid } from '../layout/dashboard/DashboardGrid';
 
-export function Hero() {
+export const Hero = memo(function Hero() {
   return (
     <section
       id="inicio"
-      // Gradiente de blanco -> Blanco -> Azul Pastel (#B8D4FF) en la unión
       className="relative w-full overflow-hidden bg-gradient-to-b from-white via-white to-[#B8D4FF]"
       aria-label="Encabezado principal"
     >
-      {/* ── 1. CAPA DE BLOBS ───────────────────────────────────────────── */}
-      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none">
+      {/* ─── 1. Capa de Blobs Atmosféricos ─────────────────────────────────── */}
+      <div className="absolute inset-0 z-0 overflow-hidden pointer-events-none" aria-hidden="true">
         <GradientBlob
           color="bg-blob-blue"
           size="xl"
           blur="2xl"
-          opacity={30} // Bajamos opacidad para el fondo claro
+          opacity={25}
           className="-top-40 -left-48"
         />
         <GradientBlob
           color="bg-blob-violet"
           size="lg"
           blur="xl"
-          opacity={25}
+          opacity={20}
           className="top-20 right-[-12%]"
         />
         <GradientBlob
           color="bg-blob-cyan"
           size="md"
           blur="lg"
-          opacity={20}
+          opacity={15}
           className="bottom-0 right-[20%]"
         />
       </div>
 
-      {/* ── 2. CONTENIDO ───────────────────────────────────────────────── */}
+      {/* ─── 2. Bloque de Contenido Central ────────────────────────────────── */}
       <div className="relative z-10 max-w-6xl mx-auto px-6 pt-32 pb-16">
+        <div className="flex flex-col items-center text-center max-w-4xl mx-auto mb-16">
 
-        <div className="flex flex-col items-center text-center max-w-3xl mx-auto mb-16">
-
-          {/* Eyebrow */}
+          {/* Eyebrow de Conversión Local */}
           <div
             className={[
               'inline-flex items-center gap-2',
-              'px-3.5 py-1.5 rounded-full mb-6',
+              'px-4 py-1.5 rounded-full mb-6',
               'bg-brand-light border border-brand/20',
-              'text-brand text-[11px] font-semibold tracking-widest uppercase',
+              'text-brand text-[11px] font-bold tracking-widest uppercase font-mono shadow-sm',
             ].join(' ')}
           >
             <span className="size-1.5 rounded-full bg-brand animate-pulse" aria-hidden="true" />
-            la unica infraestructura orquestadora del sistema sanitario de venezuela
+            Tu salud · Sin vueltas
           </div>
 
-          {/* H1 - El titular negro resalta perfecto sobre el gradiente claro */}
+          {/* H1: Humano y Directo */}
           <h1
             className={[
-              'font-sans font-extrabold text-ink',
-              'text-[40px] sm:text-5xl md:text-[58px] lg:text-[64px]',
-              'leading-[1.06] tracking-[-0.04em]',
-              'mb-6',
+              'font-sans font-extrabold text-slate-900',
+              'text-[40px] sm:text-5xl md:text-[56px] lg:text-[62px]',
+              'leading-[1.05] tracking-[-0.04em]',
+              'mb-6 max-w-3xl',
             ].join(' ')}
           >
-            El Sistema Operativo
-            <br />
-            <span className="text-brand">
-              de la Salud Privada.
+            Gestione su consulta.{' '}
+            <span className="text-brand block sm:inline">
+              Conecte su farmacia en un solo lugar.
             </span>
           </h1>
 
-          {/* Subtítulo */}
+          {/* Subtítulo: Enfocado en Utilidad Real */}
           <p
             className={[
               'text-ink-secondary font-inter',
               'text-base sm:text-lg leading-relaxed',
-              'max-w-2xl mb-10',
+              'max-w-2xl mb-10 font-normal',
             ].join(' ')}
           >
-            Conectamos médicos, clínicas, farmacias y laboratorios
-            en una sola capa operativa. Menos fricción, más control,
-            trazabilidad total del episodio clínico.
+            Sincronice su consulta con clínicas, laboratorios y las farmacias de la zona. 
+            Emita recetas digitales verificadas y reciba los pagos directamente sin trámites adicionales.
           </p>
 
-          {/* CTAs */}
-          <div className="flex flex-col sm:flex-row items-center gap-3">
+          {/* Acciones */}
+          <div className="flex flex-col sm:flex-row items-center gap-3 z-20">
             <a
               href="https://app.healtng.com/login?action=register"
               className={[
                 'inline-flex items-center gap-2',
                 'px-6 py-3.5 rounded-full',
                 'bg-brand text-white',
-                'text-[14px] font-semibold tracking-[-0.01em]',
+                'text-[14px] font-bold tracking-[-0.01em]',
                 'transition-all duration-200',
-                'hover:bg-brand/90 hover:shadow-lg hover:-translate-y-px',
+                'hover:bg-brand/90 hover:shadow-xl hover:-translate-y-px',
                 'active:scale-[0.98]',
               ].join(' ')}
             >
               Crear cuenta gratis
             </a>
             <a
-              href="#plataforma"
+              href="#soluciones"
               className={[
                 'inline-flex items-center gap-2',
                 'px-6 py-3.5 rounded-full',
-                'bg-white border border-border text-ink-secondary',
+                'bg-white border border-slate-200 text-slate-700',
                 'text-[14px] font-semibold tracking-[-0.01em]',
                 'transition-all duration-200',
-                'hover:text-ink hover:border-ink/30 hover:shadow-card',
+                'hover:text-slate-900 hover:border-slate-300 hover:shadow-card',
                 'active:scale-[0.98]',
               ].join(' ')}
             >
-              Ver la plataforma
+              Ver cómo funciona
             </a>
           </div>
         </div>
 
-        {/* ── 3. MOCKUP INTERACTIVO ──────────────────────────────────────── */}
-        <div
-          id="plataforma"
-          className="relative mx-auto max-w-6xl w-full z-10"
-        >
-          {/* Halo sutil ambiental en tono violeta/azul sobre el fondo pastel */}
-          <div className="absolute inset-x-12 bottom-0 h-40 rounded-full bg-violet-200/50 blur-[100px] pointer-events-none" />
+        {/* ─── 3. Contenedor de la Interfaz Dashboard ────────────────────────── */}
+        <div id="plataforma" className="relative mx-auto max-w-5xl w-full z-10 mt-4">
+          <div className="absolute inset-x-12 bottom-0 h-40 rounded-full bg-brand/10 blur-[100px] pointer-events-none" />
 
-          {/* Contenedor del Dashboard (Marco visual de Fabric Health) */}
-          <div
-            className={[
-              'relative rounded-3xl overflow-hidden',
-              'border border-slate-200/50',
-              'shadow-[0_24px_70px_-12px_rgba(45,71,114,0.12)]', // Sombra suave institucional
-              'bg-[#f8fafc]',
-            ].join(' ')}
-          >
-            {/* Barra de ventana falsa */}
-            <div className="flex items-center gap-1.5 px-4 py-3.5 bg-white border-b border-slate-100">
-              <span className="size-2.5 rounded-full bg-slate-200" />
-              <span className="size-2.5 rounded-full bg-slate-200" />
-              <span className="size-2.5 rounded-full bg-slate-200" />
-              <span className="ml-auto text-[10px] text-ink-tertiary font-inter tracking-wide">
-                app.healtng.com
-              </span>
+          <div className="relative rounded-3xl overflow-hidden border border-slate-200/60 shadow-[0_32px_80px_-16px_rgba(0,46,229,0.1)] bg-[#f8fafc]">
+            <div className="flex items-center gap-1.5 px-5 py-4 bg-white border-b border-slate-100">
+              <div className="size-2.5 rounded-full bg-slate-200" />
+              <div className="size-2.5 rounded-full bg-slate-200" />
+              <div className="size-2.5 rounded-full bg-slate-200" />
+              <div className="ml-auto flex items-center gap-2">
+                <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+                <span className="text-[10px] text-slate-400 font-mono tracking-wider uppercase font-semibold">
+                  app.healtng.com
+                </span>
+              </div>
             </div>
 
-            {/* Inserción del DashboardGrid */}
-            <div className="p-4 md:p-6 bg-[#f8fafc]">
+            <div className="p-4 sm:p-6 bg-[#f8fafc]">
               <DashboardGrid />
             </div>
           </div>
         </div>
       </div>
+
+      {/* Parche molecular de sellado subpíxel */}
+      <div 
+        className="absolute bottom-0 left-0 right-0 h-px bg-[#B8D4FF] z-30 pointer-events-none" 
+        style={{ transform: 'translateY(0.5px)' }} 
+      />
     </section>
   );
-}
+});
