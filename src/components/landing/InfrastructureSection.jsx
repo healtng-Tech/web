@@ -1,103 +1,109 @@
-import React, { useState, useEffect } from 'react';
+import React, { memo } from 'react';
 import { useInView } from '../../hooks/useInView';
 
-const INFRA_TABS = [
+// ─── Configuración de Tarjetas con Micro-UIs integradas de forma nativa ─────
+const INFRA_CARDS = [
   {
     id: 'interop',
-    label: 'Interoperabilidad',
-    title: 'Conexión Interoperable',
-    description: 'Sincronice sus datos vía API REST. Integramos su EMR sin fricción operativa ni tiempo de inactividad.',
+    colorIcon: 'text-brand',
+    colorLabel: 'text-brand',
+    label: 'Integración',
+    title: 'Se conecta con lo que ya tiene.',
+    description: 'Si ya usa un sistema de historia clínica, Healtng se integra sin reemplazarlo. Sus datos viajan de forma segura sin interrumpir su flujo de trabajo actual.',
     detail: 'API REST · HL7 FHIR · Webhooks',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
+        <path d="M8 6H6a2 2 0 0 0-2 2v8a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2v-2"/>
+        <path d="M16 2h4v4"/>
+        <path d="M20 2 9 13"/>
+      </svg>
+    ),
+    // Micro-UI: Fragmento de API e Interoperabilidad
     visual: (
-      <div className="flex flex-col gap-6 w-full h-full justify-center scale-[1.2] origin-center">
-        {/* Tarjeta de Request */}
-        <div className="flex items-center justify-between px-5 py-4 bg-white rounded-xl border border-slate-200 shadow-sm">
-          <div className="flex items-center gap-4">
-            <div className="size-10 rounded-lg bg-blue-50 flex items-center justify-center text-[#002EE5]">
-              <svg className="size-5" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-                <path strokeLinecap="round" strokeLinejoin="round" d="M8 9l3 3-3 3m5 0h3M4 17h16a2 2 0 002-2V5a2 2 0 00-2-2H4a2 2 0 00-2 2v10a2 2 0 002 2z" />
-              </svg>
-            </div>
-            <div>
-              <p className="text-[12px] text-slate-500 font-mono">POST /api/v1/patients</p>
-              <p className="text-[14px] font-semibold text-slate-900">Sincronización EMR</p>
-            </div>
-          </div>
-          <span className="text-[11px] font-bold text-emerald-700 bg-emerald-50 px-3 py-1 rounded-md">200 OK</span>
+      <div className="flex flex-col gap-3 w-full text-left bg-slate-50 border border-slate-150 rounded-xl p-3.5 relative overflow-hidden">
+        <div className="absolute top-0 left-0 right-0 h-[2px] bg-brand shadow-[0_0_8px_#002EE5] animate-[scan_2.5s_ease-in-out_infinite]" />
+        <div className="flex items-center justify-between border-b border-slate-200/60 pb-2">
+          <span className="text-[10px] text-slate-500 font-mono font-medium">POST /api/v1/patients</span>
+          <span className="text-[9px] font-bold text-emerald-700 bg-emerald-50 px-1.5 py-0.5 rounded">200 OK</span>
         </div>
-        
-        {/* Tarjeta de Código */}
-        <div className="px-5 py-4 bg-white rounded-xl border border-slate-200 shadow-sm font-mono text-[12px] text-slate-600 leading-relaxed">
-          <span className="text-[#002EE5]">const</span> payload = {'{'} <br/>
-          &nbsp;&nbsp;<span className="text-slate-800">"resourceType"</span>: <span className="text-emerald-600">"Patient"</span>,<br/>
-          &nbsp;&nbsp;<span className="text-slate-800">"identifier"</span>: <span className="text-emerald-600">"V-12450332"</span>,<br/>
-          &nbsp;&nbsp;<span className="text-slate-800">"active"</span>: <span className="text-[#002EE5]">true</span><br/>
-          {'}'};
+        <div className="font-mono text-[11px] text-slate-600 leading-normal space-y-0.5">
+          <div><span className="text-[#002EE5]">const</span> patient = {'{'}</div>
+          <div className="pl-3">"resource": <span className="text-emerald-600">"FHIR"</span>,</div>
+          <div className="pl-3">"status": <span className="text-[#002EE5]">true</span></div>
+          <div>{'}'};</div>
         </div>
       </div>
     )
   },
   {
     id: 'payments',
-    label: 'Finanzas',
-    title: 'Pagos Automatizados',
-    description: 'Conciliación directa con Bancaribe. Procese pagos C2P y B2P con trazabilidad total y liquidación nocturna.',
-    detail: 'C2P · B2P · CRIN · Zelle',
+    colorIcon: 'text-emerald-600',
+    colorLabel: 'text-emerald-700',
+    label: 'Pagos',
+    title: 'El dinero entra y se registra solo.',
+    description:'Conectado directamente a su cuenta bancaria. Cada pago —C2P, B2P o transferencia— queda registrado en tiempo real. Al cierre del día su reporte está listo, sin conciliaciones manuales.',
+    detail: 'C2P · B2P · Conciliación',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
+        <rect x="2" y="5" width="20" height="14" rx="2"/>
+        <path d="M2 10h20"/>
+        <path d="M7 15h2"/>
+        <path d="M11 15h4"/>
+      </svg>
+    ),
+    // Micro-UI: Estado de Cuenta y Liquidación Bancaria
     visual: (
-      <div className="flex flex-col gap-6 w-full h-full justify-center scale-[1.2] origin-center">
-        <div className="flex flex-col items-center justify-center mb-2">
-          <div className="size-16 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center text-emerald-600 mb-4 relative">
-            <span className="absolute inset-0 rounded-full animate-ping bg-emerald-100 opacity-75"></span>
-            <svg className="size-8 relative z-10" fill="none" viewBox="0 0 24 24" stroke="currentColor" strokeWidth="2">
-              <path strokeLinecap="round" strokeLinejoin="round" d="M5 13l4 4L19 7" />
-            </svg>
+      <div className="flex flex-col gap-2.5 w-full text-left bg-white border border-slate-200 rounded-xl p-3.5 shadow-sm">
+        <div className="flex justify-between items-center">
+          <div className="flex items-center gap-1.5">
+            <span className="size-1.5 rounded-full bg-emerald-500 animate-pulse"></span>
+            <span className="text-[11px] font-semibold text-slate-700">Liquidación Nocturna</span>
           </div>
-          <p className="text-[16px] font-bold text-slate-900">Liquidación Exitosa</p>
-          <p className="text-[12px] text-slate-500 mt-1">Lote #8492 · Bancaribe</p>
+          <span className="text-[10px] font-bold text-emerald-600 bg-emerald-50 px-2 py-0.5 rounded-full">Bancaribe</span>
         </div>
-        <div className="bg-white rounded-xl border border-slate-200 shadow-sm p-5">
-          <div className="flex justify-between items-center mb-3">
-            <span className="text-[13px] text-slate-500">Total liquidado</span>
-            <span className="text-[18px] font-bold text-emerald-600">$12,840.00</span>
-          </div>
-          <div className="w-full h-2 bg-slate-100 rounded-full overflow-hidden">
-            <div className="h-full bg-emerald-500 w-full rounded-full"></div>
-          </div>
-          <p className="text-[11px] text-slate-400 mt-3 text-right">100% conciliado automáticamente</p>
+        <div className="flex items-baseline gap-1.5 mt-0.5">
+          <span className="text-2xl font-extrabold text-slate-900 leading-none">$12,840</span>
+          <span className="text-[10px] text-slate-400 font-medium">100% Conciliado</span>
+        </div>
+        <div className="w-full bg-slate-100 rounded-full h-1 mt-1 overflow-hidden">
+          <div className="bg-emerald-500 h-full rounded-full w-full" />
         </div>
       </div>
     )
   },
   {
     id: 'logistics',
-    label: 'Logística',
-    title: 'Orquestación Logística',
-    description: 'Conectividad nativa para despacho de insumos médicos. Trazabilidad de última milla desde la orden hasta la entrega.',
-    detail: 'Yummy Rides · QR Trazable · ETA en vivo',
+    colorIcon: 'text-amber-600',
+    colorLabel: 'text-amber-700',
+    label: 'Despacho',
+    title: 'El medicamento llega con precisión.',
+    description: 'El paciente puede retirar su medicamento en la farmacia aliada o recibirlo en casa. Usted sabe en qué estado está cada entrega sin hacer una sola llamada.',
+    detail: 'Yummy Rides · Seguimiento en vivo',
+    icon: (
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.75" strokeLinecap="round" strokeLinejoin="round" className="w-6 h-6" aria-hidden="true">
+        <path d="M5 17H3a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11a2 2 0 0 1 2 2v3"/>
+        <rect x="9" y="11" width="14" height="10" rx="1"/>
+        <circle cx="12" cy="21" r="1"/>
+        <circle cx="20" cy="21" r="1"/>
+      </svg>
+    ),
+    // Micro-UI: Trazabilidad Logística de Insumos
     visual: (
-      <div className="flex flex-col gap-6 w-full h-full justify-center relative scale-[1.2] origin-center">
-        <div className="absolute inset-0 bg-[url('data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMjAiIGhlaWdodD0iMjAiIHhtbG5zPSJodHRwOi8vd3d3LnczLm9yZy8yMDAwL3N2ZyI+PGNpcmNsZSBjeD0iMSIgY3k9IjEiIHI9IjEiIGZpbGw9InJnYmEoMCwwLDAsMC4wNSkiLz48L3N2Zz4=')] opacity-50 rounded-xl" />
-        
-        <div className="relative z-10 bg-white/95 backdrop-blur-md rounded-xl border border-slate-200 p-6 shadow-sm">
-          <div className="flex justify-between items-start mb-6">
-            <div>
-              <p className="text-[11px] font-bold text-amber-600 tracking-wider uppercase mb-1">En tránsito</p>
-              <p className="text-[14px] font-bold text-slate-900">Orden #4821</p>
-            </div>
-            <span className="text-[12px] font-medium text-slate-600 bg-slate-100 px-3 py-1 rounded-full">ETA: 12 min</span>
+      <div className="flex flex-col gap-2.5 w-full text-left bg-slate-50 border border-slate-150 rounded-xl p-3.5">
+        <div className="flex justify-between items-center border-b border-slate-200/60 pb-2">
+          <span className="text-[11px] font-bold text-slate-800">Orden #4821</span>
+          <span className="text-[10px] font-semibold text-amber-700 bg-amber-50 px-2 py-0.5 rounded-full">En tránsito · 12 min</span>
+        </div>
+        <div className="relative pl-4 border-l border-slate-200 space-y-2 mt-0.5">
+          <div className="text-[11px]">
+            <span className="absolute -left-[4.5px] top-1 size-2 rounded-full bg-slate-300 ring-2 ring-slate-50" />
+            <p className="text-slate-400 text-[10px] leading-none">Origen</p>
+            <p className="font-medium text-slate-700 mt-0.5">Farmacia Aliada</p>
           </div>
-
-          <div className="relative pl-6 border-l-2 border-slate-100 space-y-6">
-            <div className="relative">
-              <span className="absolute -left-[25px] top-1 size-3.5 rounded-full bg-slate-300 ring-4 ring-white"></span>
-              <p className="text-[12px] text-slate-500">Origen</p>
-              <p className="text-[14px] font-medium text-slate-800">Farmacia SAAS - Sede Norte</p>
-            </div>
-            <div className="relative">
-              <span className="absolute -left-[25px] top-1 size-3.5 rounded-full bg-amber-500 ring-4 ring-white shadow-[0_0_10px_rgba(245,158,11,0.3)]"></span>
-              <p className="text-[12px] text-amber-600">Ubicación actual</p>
-              <p className="text-[14px] font-medium text-slate-900">Unidad Yummy #844</p>
-            </div>
+          <div className="text-[11px]">
+            <span className="absolute -left-[4.5px] top-1 size-2 rounded-full bg-amber-500 ring-2 ring-slate-50 shadow-[0_0_6px_#f59e0b]" />
+            <p className="text-amber-600 text-[10px] leading-none">Ruta</p>
+            <p className="font-bold text-slate-900 mt-0.5">Unidad Yummy #844</p>
           </div>
         </div>
       </div>
@@ -105,104 +111,87 @@ const INFRA_TABS = [
   }
 ];
 
-export function InfrastructureSection() {
-  const [activeIdx, setActiveIdx] = useState(0);
-  const { ref, inView } = useInView({ threshold: 0.15 });
+const InfraCard = memo(function InfraCard({ card, delay }) {
+  const { ref, inView } = useInView({ threshold: 0.1 });
+  
+  return (
+    <article
+      ref={ref}
+      className={[
+        'group flex flex-col gap-5 p-8 rounded-[28px]',
+        'bg-surface border border-border',
+        'transition-all duration-500 ease-out',
+        'hover:shadow-card-lg hover:-translate-y-1 hover:border-slate-300/70',
+        inView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-6',
+      ].join(' ')}
+      style={{ transitionDelay: inView ? delay : '0ms' }}
+    >
+      {/* Icono de Módulo */}
+      <div className={['flex items-center justify-center w-14 h-14 rounded-2xl border border-border/80 bg-white shadow-sm group-hover:scale-105 transition-transform duration-300', card.colorIcon].join(' ')}>
+        {card.icon}
+      </div>
+      
+      {/* Etiqueta de Categoría */}
+      <span className={['text-[10px] font-bold tracking-widest uppercase', card.colorLabel].join(' ')}>
+        {card.label}
+      </span>
+      
+      {/* Copys e Información */}
+      <div className="flex flex-col gap-2">
+        <h3 className="text-[17px] font-bold text-ink leading-snug">{card.title}</h3>
+        <p className="text-[14px] text-ink-secondary leading-relaxed">{card.description}</p>
+      </div>
 
-  useEffect(() => {
-    const timer = setInterval(() => {
-      setActiveIdx((prev) => (prev + 1) % INFRA_TABS.length);
-    }, 5000);
-    return () => clearInterval(timer);
-  }, []);
+      {/* Inyección de la Micro-UI (Interactividad integrada) */}
+      <div className="w-full mt-2">
+        {card.visual}
+      </div>
+      
+      {/* Pie de Tarjeta con Datos Técnicos */}
+      <div className="mt-auto pt-4 border-t border-border">
+        <p className="text-[11px] text-ink-tertiary font-mono font-medium tracking-wide">{card.detail}</p>
+      </div>
+    </article>
+  );
+});
 
-  const active = INFRA_TABS[activeIdx];
+export const InfrastructureSection = memo(function InfrastructureSection() {
+  const { ref: headRef, inView: headInView } = useInView();
 
   return (
-    <section id="infraestructura" className="py-24 bg-white overflow-hidden" aria-labelledby="infra-heading">
-      <div ref={ref} className="max-w-6xl mx-auto px-6">
-        <div className="grid grid-cols-1 lg:grid-cols-12 gap-12 lg:gap-20 items-center">
-          <div className={[
-            'lg:col-span-5 flex flex-col gap-8',
-            'transition-all duration-700 ease-out',
-            inView ? 'opacity-100 translate-x-0' : 'opacity-0 -translate-x-8'
-          ].join(' ')}>
-            <div>
-              <span className="inline-block px-3 py-1 text-[11px] font-bold tracking-widest uppercase text-brand bg-brand-light rounded-full mb-6">
-                Infraestructura
-              </span>
-              <h2 id="infra-heading" className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-4 leading-[1.15]">
-                Una capa digital.<br/>Un solo flujo de trabajo.
-              </h2>
-              <p className="text-[15px] text-ink-secondary leading-relaxed">
-                Transformamos datos aislados en un flujo operativo coordinado. Menos llamadas, menos errores humanos, más capacidad de atención.
-              </p>
-            </div>
-            <div className="flex flex-col gap-3 relative" role="tablist">
-              <div className="absolute left-[19px] top-4 bottom-4 w-px bg-slate-100 -z-10"></div>
-              {INFRA_TABS.map((tab, i) => {
-                const isActive = i === activeIdx;
-                return (
-                  <button
-                    key={tab.id}
-                    role="tab"
-                    aria-selected={isActive}
-                    onClick={() => setActiveIdx(i)}
-                    className={[
-                      'group flex items-start gap-4 p-4 rounded-2xl transition-all duration-300 text-left border',
-                      isActive ? 'bg-white shadow-card-lg border-slate-100' : 'bg-transparent border-transparent hover:bg-slate-50'
-                    ].join(' ')}
-                  >
-                    <div className={[
-                      'mt-0.5 size-6 rounded-full flex items-center justify-center shrink-0 border-2 transition-colors duration-300 z-10',
-                      isActive ? 'bg-[#002EE5] border-[#002EE5]' : 'bg-white border-slate-200 group-hover:border-slate-300'
-                    ].join(' ')}>
-                      <div className={['size-1.5 rounded-full transition-colors duration-300', isActive ? 'bg-white' : 'bg-transparent'].join(' ')} />
-                    </div>
-                    <div>
-                      <h3 className={['text-[15px] font-bold tracking-tight mb-1 transition-colors duration-300', isActive ? 'text-ink' : 'text-ink-tertiary group-hover:text-ink-secondary'].join(' ')}>
-                        {tab.title}
-                      </h3>
-                      {isActive && (
-                        <div className="animate-in slide-in-from-top-2 fade-in duration-300">
-                          <p className="text-[13px] text-ink-secondary leading-relaxed mb-3">
-                            {tab.description}
-                          </p>
-                          <p className="text-[10px] font-bold tracking-widest uppercase text-brand">
-                            {tab.detail}
-                          </p>
-                        </div>
-                      )}
-                    </div>
-                  </button>
-                );
-              })}
-            </div>
-          </div>
-          <div className={[
-            'lg:col-span-7 relative h-[420px] lg:h-[500px] w-full',
-            'transition-all duration-700 ease-out delay-150',
-            inView ? 'opacity-100 translate-x-0' : 'opacity-0 translate-x-8'
-          ].join(' ')}>
-            <div className="absolute inset-0 bg-slate-50 rounded-[32px] overflow-hidden shadow-[0_24px_70px_-12px_rgba(45,71,114,0.12)] border border-slate-200/60">
-              <div className="absolute top-0 inset-x-0 h-12 bg-white border-b border-slate-100 flex items-center px-5 gap-2 z-20">
-                <div className="size-2.5 rounded-full bg-[#FF5F57]"></div>
-                <div className="size-2.5 rounded-full bg-[#FEBC2E]"></div>
-                <div className="size-2.5 rounded-full bg-[#28C840]"></div>
-                <div className="ml-auto flex items-center gap-2">
-                  <span className="size-2 rounded-full bg-emerald-500 animate-pulse"></span>
-                  <span className="text-[10px] font-mono text-slate-400 uppercase tracking-widest">Sistema en línea</span>
-                </div>
-              </div>
-              <div className="absolute inset-0 pt-12 px-8 pb-8 flex items-center justify-center">
-                <div key={active.id} className="w-full max-w-sm animate-in fade-in zoom-in-95 duration-500 ease-out">
-                  {active.visual}
-                </div>
-              </div>
-            </div>
-          </div>
+    <section id="infraestructura" className="py-24 bg-white" aria-labelledby="infra-heading">
+      <div className="max-w-6xl mx-auto px-6">
+        
+        {/* Header de Sección */}
+        <div ref={headRef} className={['text-center max-w-2xl mx-auto mb-16 transition-all duration-600 ease-out', headInView ? 'opacity-100 translate-y-0' : 'opacity-0 translate-y-5'].join(' ')}>
+          <span className="inline-block px-3 py-1 text-[11px] font-bold tracking-widest uppercase text-brand bg-brand-light rounded-full mb-6">
+            Infraestructura
+          </span>
+          <h2 id="infra-heading" className="text-3xl md:text-4xl font-extrabold text-ink tracking-tight mb-5 leading-[1.15]">
+            Una capa digital.<br />Un solo flujo de trabajo.
+          </h2>
+          <p className="text-[16px] text-ink-secondary leading-relaxed">
+            Menos llamadas entre médicos, farmacias y pacientes. Menos errores operativos. Más tiempo enfocado en la salud.
+          </p>
+        </div>
+
+        {/* Grid Corporativo de 3 Columnas Autónomas */}
+        <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {INFRA_CARDS.map((card, i) => (
+            <InfraCard key={card.id} card={card} delay={`${i * 120}ms`} />
+          ))}
         </div>
       </div>
+
+      {/* Estilos para la barra de escaneo de la Micro-UI de API */}
+      <style>{`
+        @keyframes scan {
+          0%, 100% { transform: translateY(0); opacity: 0; }
+          10% { opacity: 1; }
+          50% { transform: translateY(42px); }
+          90% { opacity: 1; }
+        }
+      `}</style>
     </section>
   );
-}
+});
