@@ -81,7 +81,7 @@ export const Hero = memo(function Hero() {
           {/* Acciones */}
           <div className="flex flex-col sm:flex-row items-center gap-3 z-20">
             <a
-              href="https://app.healtng.com/login?action=register"
+              href="https://app.healtng.com/iniciar-sesion?action=register"
               className={[
                 'inline-flex items-center gap-2',
                 'px-6 py-3.5 rounded-full',

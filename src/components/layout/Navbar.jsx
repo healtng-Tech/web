@@ -11,7 +11,7 @@ const NAV_LINKS = [
 function NavCTA() {
   return (
     <a
-      href="https://app.healtng.com/login?action=register"
+      href="https://app.healtng.com/iniciar-sesion?action=register"
       className="inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-brand text-white text-[13px] font-semibold tracking-[-0.01em] transition-all duration-200 hover:bg-brand/90 hover:shadow-md active:scale-[0.98]"
     >
       Iniciar Demo
@@ -55,7 +55,7 @@ export function Navbar() {
           </ul>
 
           <div className="hidden md:flex items-center gap-3">
-            <a href="https://app.healtng.com/login" className="px-4 py-2 rounded-full text-[13px] font-semibold text-slate-600 transition-colors duration-150 hover:text-slate-900 hover:bg-slate-50">
+            <a href="https://app.healtng.com/iniciar-sesion" className="px-4 py-2 rounded-full text-[13px] font-semibold text-slate-600 transition-colors duration-150 hover:text-slate-900 hover:bg-slate-50">
               Inicia sesión
             </a>
             <NavCTA />
@@ -79,10 +79,10 @@ export function Navbar() {
             </a>
           ))}
           <div className="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3">
-            <a href="https://app.healtng.com/login" onClick={() => setMobileOpen(false)} className="px-4 py-3.5 rounded-xl text-[15px] font-semibold text-slate-500 hover:bg-slate-50 transition-colors">
+            <a href="https://app.healtng.com/iniciar-sesion" onClick={() => setMobileOpen(false)} className="px-4 py-3.5 rounded-xl text-[15px] font-semibold text-slate-500 hover:bg-slate-50 transition-colors">
               Inicia sesión
             </a>
-            <a href="https://app.healtng.com/login?action=register" onClick={() => setMobileOpen(false)} className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-brand text-white text-[15px] font-bold hover:bg-brand/90 transition-colors shadow-sm">
+            <a href="https://app.healtng.com/iniciar-sesion?action=register" onClick={() => setMobileOpen(false)} className="flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-brand text-white text-[15px] font-bold hover:bg-brand/90 transition-colors shadow-sm">
               Iniciar Demo
             </a>
           </div>
