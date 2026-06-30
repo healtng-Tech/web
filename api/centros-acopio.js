@@ -1,8 +1,8 @@
 import { put, list, get } from '@vercel/blob';
 import { sendNotification } from './_lib/email.js';
 
-const CSV_HEADER = 'fecha,nombre,apellido,telefono,email,comentario';
-const BLOB_PATH = 'donaciones/donaciones.csv';
+const CSV_HEADER = 'fecha,nombre_centro,responsable,telefono,email,direccion,comentario';
+const BLOB_PATH = 'centros-acopio/centros.csv';
 
 function getToken() {
   return process.env.BLOB_READ_WRITE_TOKEN;
@@ -14,7 +14,7 @@ export const config = {
 
 async function readExistingCsv(token) {
   try {
-    const { blobs } = await list({ token, prefix: 'donaciones/donaciones' });
+    const { blobs } = await list({ token, prefix: 'centros-acopio/centros' });
     if (blobs.length > 0) {
       const blobData = await get(blobs[0].url, { token });
       if (blobData?.body) {
@@ -37,10 +37,10 @@ async function readExistingCsv(token) {
 export async function POST(request) {
   try {
     const body = await request.json();
-    const { nombre, apellido, telefono, email, comentario } = body;
+    const { nombreCentro, responsable, telefono, email, direccion, comentario } = body;
 
-    if (!nombre || !apellido || !telefono) {
-      return Response.json({ error: 'Nombre, apellido y teléfono son obligatorios' }, { status: 400 });
+    if (!nombreCentro || !responsable || !telefono) {
+      return Response.json({ error: 'Nombre del centro, responsable y teléfono son obligatorios' }, { status: 400 });
     }
 
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -56,7 +56,8 @@ export async function POST(request) {
 
     const timestamp = new Date().toISOString();
     const safeComment = (comentario || '').replace(/"/g, '""');
-    const csvLine = `"${timestamp}","${nombre}","${apellido}","${telefono}","${email || ''}","${safeComment}"\n`;
+    const safeDir = (direccion || '').replace(/"/g, '""');
+    const csvLine = `"${timestamp}","${nombreCentro}","${responsable}","${telefono}","${email || ''}","${safeDir}","${safeComment}"\n`;
 
     const existingContent = await readExistingCsv(token);
     const content = existingContent || CSV_HEADER + '\n';
@@ -69,35 +70,39 @@ export async function POST(request) {
     });
 
     sendNotification({
-      subject: `Nueva solicitud de férula — ${nombre} ${apellido}`,
+      subject: `Nuevo centro de acopio — ${nombreCentro}`,
       text: [
-        `Nombre: ${nombre} ${apellido}`,
+        `Centro: ${nombreCentro}`,
+        `Responsable: ${responsable}`,
         `Teléfono: ${telefono}`,
         `Email: ${email || 'No proporcionado'}`,
+        `Dirección: ${direccion || 'No proporcionada'}`,
         `Comentario: ${comentario || 'Ninguno'}`,
         `Fecha: ${timestamp}`,
         `─`.repeat(30),
-        `Ver CSV: Blob Storage → donaciones/donaciones.csv`,
+        `Ver CSV: Blob Storage → centros-acopio/centros.csv`,
       ].join('\n'),
       html: [
-        '<h2>Nueva solicitud de férula</h2>',
+        '<h2>Nuevo centro de acopio registrado</h2>',
         '<table style="border-collapse:collapse;width:100%">',
-        `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Nombre</td><td>${nombre} ${apellido}</td></tr>`,
+        `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Centro</td><td>${nombreCentro}</td></tr>`,
+        `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Responsable</td><td>${responsable}</td></tr>`,
         `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Teléfono</td><td>${telefono}</td></tr>`,
         `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Email</td><td>${email || '—'}</td></tr>`,
+        `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Dirección</td><td>${direccion || '—'}</td></tr>`,
         `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Comentario</td><td>${comentario || '—'}</td></tr>`,
         `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Fecha</td><td>${timestamp}</td></tr>`,
         '</table>',
       ].join(''),
     });
 
-    return Response.json({ success: true, message: 'Solicitud registrada correctamente' });
+    return Response.json({ success: true, message: 'Centro de acopio registrado correctamente' });
   } catch (error) {
-    console.error('Error guardando donación:', error?.message || error);
+    console.error('Error guardando centro de acopio:', error?.message || error);
     return Response.json({ error: error?.message || 'Error interno del servidor' }, { status: 500 });
   }
 }
 
 export async function GET() {
-  return Response.json({ message: 'Endpoint de donaciones activo' });
+  return Response.json({ message: 'Endpoint de centros de acopio activo' });
 }

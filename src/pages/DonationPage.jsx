@@ -1,5 +1,5 @@
 import { memo, useState, useCallback } from 'react';
-import { Heart, MapPin, ChevronDown, Send, Loader2 } from 'lucide-react';
+import { Heart, MapPin, ChevronDown, Send, Loader2, Building2 } from 'lucide-react';
 
 const FAQ_ITEMS = [
   {
@@ -164,6 +164,37 @@ export const DonationPage = memo(function DonationPage() {
       setStatus('error');
     }
   }, [formData]);
+
+  const [centroData, setCentroData] = useState({ nombreCentro: '', responsable: '', telefono: '', email: '', direccion: '', comentario: '' });
+  const [centroStatus, setCentroStatus] = useState('idle');
+
+  const handleCentroChange = useCallback((field) => (e) => {
+    setCentroData((prev) => ({ ...prev, [field]: e.target.value }));
+  }, []);
+
+  const handleCentroSubmit = useCallback(async (e) => {
+    e.preventDefault();
+    setCentroStatus('submitting');
+
+    try {
+      const res = await fetch('/api/centros-acopio', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(centroData),
+      });
+
+      if (res.ok) {
+        setCentroStatus('success');
+        setCentroData({ nombreCentro: '', responsable: '', telefono: '', email: '', direccion: '', comentario: '' });
+      } else {
+        const data = await res.json();
+        setCentroStatus('error');
+        console.error('Error del servidor:', data.error);
+      }
+    } catch {
+      setCentroStatus('error');
+    }
+  }, [centroData]);
 
   return (
     <div className="min-h-screen">
@@ -407,6 +438,149 @@ export const DonationPage = memo(function DonationPage() {
 
                   <p className="text-center text-[11px] text-slate-400 font-medium">
                     Tus datos son confidenciales. Solo los usaremos para contactarte respecto a tu solicitud.
+                  </p>
+                </form>
+              )}
+            </div>
+          </div>
+        </div>
+      </section>
+
+      {/* ─── CENTROS DE ACOPIO ───────────────────────────────── */}
+      <section className="py-16 md:py-24 bg-surface" id="centros-acopio-form">
+        <div className="max-w-3xl mx-auto px-6">
+          <div className="text-center mb-10">
+            <div className="inline-flex items-center gap-2 px-4 py-1.5 rounded-full bg-blue-50 border border-blue-200 text-blue-700 text-[11px] font-bold tracking-widest uppercase mb-4">
+              <Building2 className="size-3.5" />
+              Para centros de acopio
+            </div>
+            <h2 className="text-3xl sm:text-4xl font-extrabold text-slate-900 tracking-[-0.03em] mb-4">
+              ¿Eres un centro de acopio?
+            </h2>
+            <p className="text-[15px] text-slate-500 max-w-lg mx-auto">
+              Si representas un centro de acopio u organización que quiere participar en la red de distribución de férulas e inmovilizadores, déjanos tus datos y te contactaremos para coordinar.
+            </p>
+          </div>
+
+          <div className="relative bg-white rounded-3xl border border-slate-100 shadow-card-lg overflow-hidden">
+            <div className="absolute inset-0 pointer-events-none opacity-[0.03]">
+              <svg className="w-full h-full">
+                <pattern id="centro-grid" width="40" height="40" patternUnits="userSpaceOnUse">
+                  <path d="M 40 0 L 0 0 0 40" fill="none" stroke="#002EE5" strokeWidth="0.5" />
+                </pattern>
+                <rect width="100%" height="100%" fill="url(#centro-grid)" />
+              </svg>
+            </div>
+
+            <div className="relative z-10 px-6 py-10 md:p-10">
+              {centroStatus === 'success' ? (
+                <div className="py-6 flex flex-col items-center gap-3">
+                  <div className="size-14 rounded-full bg-emerald-50 border border-emerald-100 flex items-center justify-center">
+                    <svg className="size-7 text-emerald-600" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round"><polyline points="20 6 9 17 4 12" /></svg>
+                  </div>
+                  <h3 className="text-xl font-bold text-slate-900 mt-2">¡Registro recibido!</h3>
+                  <p className="text-[14px] text-slate-500 text-center max-w-sm">
+                    Gracias por tu interés. Te contactaremos en las próximas 24 a 48 horas para coordinar la incorporación de tu centro a la red.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setCentroStatus('idle')}
+                    className="mt-4 px-6 py-2.5 rounded-xl bg-slate-100 text-slate-700 text-[13px] font-semibold hover:bg-slate-200 transition-colors"
+                  >
+                    Registrar otro centro
+                  </button>
+                </div>
+              ) : centroStatus === 'error' ? (
+                <div className="py-6 flex flex-col items-center gap-3">
+                  <div className="size-14 rounded-full bg-red-50 border border-red-100 flex items-center justify-center text-red-600 text-xl font-bold">!</div>
+                  <h3 className="text-xl font-bold text-slate-900 mt-2">Error al enviar</h3>
+                  <p className="text-[14px] text-slate-500 text-center max-w-sm">
+                    Ocurrió un error al procesar tu registro. Por favor intenta de nuevo.
+                  </p>
+                  <button
+                    type="button"
+                    onClick={() => setCentroStatus('idle')}
+                    className="mt-4 px-6 py-2.5 rounded-xl bg-slate-100 text-slate-700 text-[13px] font-semibold hover:bg-slate-200 transition-colors"
+                  >
+                    Intentar de nuevo
+                  </button>
+                </div>
+              ) : (
+                <form onSubmit={handleCentroSubmit} className="flex flex-col gap-4">
+                  <input
+                    required
+                    type="text"
+                    name="nombreCentro"
+                    value={centroData.nombreCentro}
+                    onChange={handleCentroChange('nombreCentro')}
+                    placeholder="Nombre del centro *"
+                    className="w-full px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 text-[14px] font-medium outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all duration-150"
+                  />
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                    <input
+                      required
+                      type="text"
+                      name="responsable"
+                      value={centroData.responsable}
+                      onChange={handleCentroChange('responsable')}
+                      placeholder="Responsable *"
+                      className="w-full px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 text-[14px] font-medium outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all duration-150"
+                    />
+                    <input
+                      required
+                      type="tel"
+                      name="telefono"
+                      value={centroData.telefono}
+                      onChange={handleCentroChange('telefono')}
+                      placeholder="Teléfono * (+58)"
+                      className="w-full px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 text-[14px] font-medium outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all duration-150"
+                    />
+                  </div>
+                  <input
+                    type="email"
+                    name="email"
+                    value={centroData.email}
+                    onChange={handleCentroChange('email')}
+                    placeholder="Correo electrónico"
+                    className="w-full px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 text-[14px] font-medium outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all duration-150"
+                  />
+                  <input
+                    type="text"
+                    name="direccion"
+                    value={centroData.direccion}
+                    onChange={handleCentroChange('direccion')}
+                    placeholder="Dirección del centro"
+                    className="w-full px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 text-[14px] font-medium outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all duration-150"
+                  />
+                  <textarea
+                    name="comentario"
+                    value={centroData.comentario}
+                    onChange={handleCentroChange('comentario')}
+                    placeholder="Comentario adicional (capacidad, zona de cobertura, etc.)"
+                    rows={3}
+                    className="w-full px-4 py-3.5 rounded-xl bg-slate-50 border border-slate-200 text-slate-900 placeholder:text-slate-400 text-[14px] font-medium outline-none focus:border-brand focus:ring-4 focus:ring-brand/10 transition-all duration-150 resize-none"
+                  />
+
+                  <button
+                    type="submit"
+                    disabled={centroStatus === 'submitting'}
+                    className="w-full flex items-center justify-center gap-2 px-6 py-4 rounded-xl bg-gradient-to-r from-brand to-brand-mid text-white text-[15px] font-bold tracking-[-0.01em] shadow-[0_4px_24px_rgba(0,46,229,0.25)] transition-all duration-200 hover:from-brand/90 hover:to-brand-mid/90 hover:shadow-[0_8px_32px_rgba(0,46,229,0.35)] hover:-translate-y-px active:scale-[0.98] disabled:opacity-60 disabled:cursor-not-allowed disabled:hover:translate-y-0"
+                  >
+                    {centroStatus === 'submitting' ? (
+                      <>
+                        <Loader2 className="size-4 animate-spin" />
+                        Enviando registro...
+                      </>
+                    ) : (
+                      <>
+                        <Send className="size-4" />
+                        Quiero participar
+                      </>
+                    )}
+                  </button>
+
+                  <p className="text-center text-[11px] text-slate-400 font-medium">
+                    Tus datos serán utilizados exclusivamente para coordinar la participación de tu centro en la red de distribución.
                   </p>
                 </form>
               )}
