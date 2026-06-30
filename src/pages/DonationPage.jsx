@@ -269,8 +269,8 @@ export const DonationPage = memo(function DonationPage() {
 
             <div className="rounded-3xl overflow-hidden border border-slate-200 shadow-card-lg h-[350px] bg-slate-100">
               <iframe
-                title="Centro de acopio - Valencia, Carabobo"
-                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d62824.5350613136!2d-68.04446450740182!3d10.182032521465466!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e8063b0b13c5e3d%3A0x34e6e0f9a85d0d0d!2sValencia%2C%20Carabobo!5e0!3m2!1ses!2sve!4v1690000000000"
+                title="Centro de acopio - Wynwood Park, Valencia"
+                src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3926!2d-68.007151!3d10.2301518!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x8e806753f62fc1dd%3A0x6fbd22e4149f5148!2sWynwood+Park!5e0!3m2!1ses!2sve!4v1719705600000"
                 width="100%"
                 height="100%"
                 style={{ border: 0 }}

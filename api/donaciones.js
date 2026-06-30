@@ -1,7 +1,11 @@
-import { put, list } from '@vercel/blob';
+import { put, list, get } from '@vercel/blob';
 
 const CSV_HEADER = 'fecha,nombre,apellido,telefono,email,comentario';
 const BLOB_PATH = 'donaciones/donaciones.csv';
+
+function getToken() {
+  return process.env.BLOB_READ_WRITE_TOKEN;
+}
 
 export const config = {
   runtime: 'nodejs',
@@ -21,32 +25,49 @@ export async function POST(request) {
       return Response.json({ error: 'Email inválido' }, { status: 400 });
     }
 
+    const token = getToken();
+    if (!token) {
+      console.error('BLOB_READ_WRITE_TOKEN no encontrado en el entorno');
+      return Response.json({ error: 'Configuración del servidor incompleta' }, { status: 500 });
+    }
+
     const timestamp = new Date().toISOString();
     const safeComment = (comentario || '').replace(/"/g, '""');
     const csvLine = `"${timestamp}","${nombre}","${apellido}","${telefono}","${email || ''}","${safeComment}"\n`;
 
     let existingContent = '';
     try {
-      const { blobs } = await list({ prefix: 'donaciones/donaciones' });
+      const { blobs } = await list({ token, prefix: 'donaciones/donaciones' });
       if (blobs.length > 0) {
-        const response = await fetch(blobs[0].url);
-        existingContent = await response.text();
-        existingContent = existingContent.trimEnd() + '\n';
+        const blobData = await get(blobs[0].url, { token });
+        if (blobData?.body) {
+          const stream = blobData.body;
+          const reader = stream.getReader();
+          const chunks = [];
+          while (true) {
+            const { done, value } = await reader.read();
+            if (done) break;
+            chunks.push(new TextDecoder().decode(value));
+          }
+          existingContent = chunks.join('').trimEnd() + '\n';
+        }
       }
-    } catch {
-      /* sin blob existente, se inicia desde cero */
+    } catch (listErr) {
+      console.error('Error leyendo CSV existente:', listErr?.message || listErr);
     }
 
     const content = existingContent || CSV_HEADER + '\n';
     await put(BLOB_PATH, content + csvLine, {
-      access: 'public',
+      access: 'private',
       contentType: 'text/csv; charset=utf-8',
+      allowOverwrite: true,
+      token,
     });
 
     return Response.json({ success: true, message: 'Solicitud registrada correctamente' });
   } catch (error) {
-    console.error('Error guardando donación:', error);
-    return Response.json({ error: 'Error interno del servidor' }, { status: 500 });
+    console.error('Error guardando donación:', error?.message || error);
+    return Response.json({ error: error?.message || 'Error interno del servidor' }, { status: 500 });
   }
 }
 
