@@ -1,5 +1,5 @@
 import { put, list, get } from '@vercel/blob';
-import { sendNotification } from './_lib/email.js';
+import { Resend } from 'resend';
 
 const CSV_HEADER = 'fecha,nombre_centro,responsable,telefono,email,direccion,comentario';
 const BLOB_PATH = 'centros-acopio/centros.csv';
@@ -69,30 +69,39 @@ export async function POST(request) {
       token,
     });
 
-    await sendNotification({
-      subject: `Nuevo centro de acopio — ${nombreCentro}`,
-      text: [
-        `Centro: ${nombreCentro}`,
-        `Responsable: ${responsable}`,
-        `Teléfono: ${telefono}`,
-        `Email: ${email || 'No proporcionado'}`,
-        `Dirección: ${direccion || 'No proporcionada'}`,
-        `Comentario: ${comentario || 'Ninguno'}`,
-        `Fecha: ${timestamp}`,
-      ].join('\n'),
-      html: [
-        '<h2>Nuevo centro de acopio registrado</h2>',
-        '<table style="border-collapse:collapse;width:100%">',
-        `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Centro</td><td>${nombreCentro}</td></tr>`,
-        `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Responsable</td><td>${responsable}</td></tr>`,
-        `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Teléfono</td><td>${telefono}</td></tr>`,
-        `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Email</td><td>${email || '—'}</td></tr>`,
-        `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Dirección</td><td>${direccion || '—'}</td></tr>`,
-        `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Comentario</td><td>${comentario || '—'}</td></tr>`,
-        `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Fecha</td><td>${timestamp}</td></tr>`,
-        '</table>',
-      ].join(''),
-    });
+    try {
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      const to = process.env.NOTIFICATION_EMAIL || 'healtng@gmail.com';
+      await resend.emails.send({
+        from: 'Healtng Donaciones <healtng@gmail.com>',
+        to,
+        subject: `Nuevo centro de acopio — ${nombreCentro}`,
+        text: [
+          `Centro: ${nombreCentro}`,
+          `Responsable: ${responsable}`,
+          `Teléfono: ${telefono}`,
+          `Email: ${email || 'No proporcionado'}`,
+          `Dirección: ${direccion || 'No proporcionada'}`,
+          `Comentario: ${comentario || 'Ninguno'}`,
+          `Fecha: ${timestamp}`,
+        ].join('\n'),
+        html: [
+          '<h2>Nuevo centro de acopio registrado</h2>',
+          '<table style="border-collapse:collapse;width:100%">',
+          `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Centro</td><td>${nombreCentro}</td></tr>`,
+          `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Responsable</td><td>${responsable}</td></tr>`,
+          `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Teléfono</td><td>${telefono}</td></tr>`,
+          `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Email</td><td>${email || '—'}</td></tr>`,
+          `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Dirección</td><td>${direccion || '—'}</td></tr>`,
+          `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Comentario</td><td>${comentario || '—'}</td></tr>`,
+          `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Fecha</td><td>${timestamp}</td></tr>`,
+          '</table>',
+        ].join(''),
+      });
+      console.log('Email enviado OK');
+    } catch (emailErr) {
+      console.error('Error enviando email:', emailErr?.message || emailErr, emailErr?.stack);
+    }
 
     return Response.json({ success: true, message: 'Centro de acopio registrado correctamente' });
   } catch (error) {

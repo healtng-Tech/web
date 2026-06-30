@@ -1,5 +1,5 @@
 import { put, list, get } from '@vercel/blob';
-import { sendNotification } from './_lib/email.js';
+import { Resend } from 'resend';
 
 const CSV_HEADER = 'fecha,nombre,apellido,telefono,email,comentario';
 const BLOB_PATH = 'donaciones/donaciones.csv';
@@ -68,26 +68,35 @@ export async function POST(request) {
       token,
     });
 
-    await sendNotification({
-      subject: `Nueva solicitud de férula — ${nombre} ${apellido}`,
-      text: [
-        `Nombre: ${nombre} ${apellido}`,
-        `Teléfono: ${telefono}`,
-        `Email: ${email || 'No proporcionado'}`,
-        `Comentario: ${comentario || 'Ninguno'}`,
-        `Fecha: ${timestamp}`,
-      ].join('\n'),
-      html: [
-        '<h2>Nueva solicitud de férula</h2>',
-        '<table style="border-collapse:collapse;width:100%">',
-        `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Nombre</td><td>${nombre} ${apellido}</td></tr>`,
-        `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Teléfono</td><td>${telefono}</td></tr>`,
-        `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Email</td><td>${email || '—'}</td></tr>`,
-        `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Comentario</td><td>${comentario || '—'}</td></tr>`,
-        `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Fecha</td><td>${timestamp}</td></tr>`,
-        '</table>',
-      ].join(''),
-    });
+    try {
+      const resend = new Resend(process.env.RESEND_API_KEY);
+      const to = process.env.NOTIFICATION_EMAIL || 'healtng@gmail.com';
+      await resend.emails.send({
+        from: 'Healtng Donaciones <healtng@gmail.com>',
+        to,
+        subject: `Nueva solicitud de férula — ${nombre} ${apellido}`,
+        text: [
+          `Nombre: ${nombre} ${apellido}`,
+          `Teléfono: ${telefono}`,
+          `Email: ${email || 'No proporcionado'}`,
+          `Comentario: ${comentario || 'Ninguno'}`,
+          `Fecha: ${timestamp}`,
+        ].join('\n'),
+        html: [
+          '<h2>Nueva solicitud de férula</h2>',
+          '<table style="border-collapse:collapse;width:100%">',
+          `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Nombre</td><td>${nombre} ${apellido}</td></tr>`,
+          `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Teléfono</td><td>${telefono}</td></tr>`,
+          `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Email</td><td>${email || '—'}</td></tr>`,
+          `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Comentario</td><td>${comentario || '—'}</td></tr>`,
+          `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Fecha</td><td>${timestamp}</td></tr>`,
+          '</table>',
+        ].join(''),
+      });
+      console.log('Email enviado OK');
+    } catch (emailErr) {
+      console.error('Error enviando email:', emailErr?.message || emailErr, emailErr?.stack);
+    }
 
     return Response.json({ success: true, message: 'Solicitud registrada correctamente' });
   } catch (error) {
