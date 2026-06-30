@@ -76,7 +76,7 @@ export async function POST(request) {
         return Response.json({ success: true, message: 'Centro registrado (email no configurado: falta RESEND_API_KEY)' });
       }
       const resend = new Resend(apiKey);
-      const to = process.env.NOTIFICATION_EMAIL || 'healtng@gmail.com';
+      const to = process.env.NOTIFICATION_EMAIL || 'soporte@healtng.com';
       const result = await resend.emails.send({
         from: 'onboarding@resend.dev',
         to,

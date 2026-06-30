@@ -75,7 +75,7 @@ export async function POST(request) {
         return Response.json({ success: true, message: 'Solicitud registrada (email no configurado: falta RESEND_API_KEY)' });
       }
       const resend = new Resend(apiKey);
-      const to = process.env.NOTIFICATION_EMAIL || 'healtng@gmail.com';
+      const to = process.env.NOTIFICATION_EMAIL || 'soporte@healtng.com';
       const result = await resend.emails.send({
         from: 'onboarding@resend.dev',
         to,
@@ -98,10 +98,13 @@ export async function POST(request) {
           '</table>',
         ].join(''),
       });
-      console.log('Email enviado OK, id:', result?.data?.id || result?.id || 'ok');
+      const emailId = result?.data?.id || result?.id || '';
+      console.log('Email enviado OK, id:', emailId);
+      return Response.json({ success: true, message: 'Solicitud registrada correctamente', emailId });
     } catch (emailErr) {
-      console.error('Error enviando email:', emailErr?.message || emailErr, emailErr?.stack);
-      return Response.json({ success: true, message: `Solicitud guardada. Email error: ${emailErr?.message || 'desconocido'}` });
+      const errMsg = emailErr?.message || 'error desconocido';
+      console.error('Error enviando email:', errMsg);
+      return Response.json({ success: true, message: `Solicitud guardada. Email: ${errMsg}` });
     }
 
     return Response.json({ success: true, message: 'Solicitud registrada correctamente' });
