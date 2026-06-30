@@ -5,7 +5,7 @@ import {
   InfrastructureSection,
   PartnersSection,
   FeaturesShowcase,
-  FoundersSection,
+  /* FoundersSection, */
   ResourcesSection,
   FinalCTA,
 } from '../components/landing';
@@ -17,7 +17,7 @@ export const HomePage = memo(function HomePage({ onOpenModal }) {
       <ProblemStatement />
       <InfrastructureSection />
       <FeaturesShowcase />
-      <FoundersSection />
+      {/* <FoundersSection /> */}
       <PartnersSection />
       <ResourcesSection />
       <FinalCTA onOpenModal={onOpenModal} />
