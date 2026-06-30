@@ -68,7 +68,7 @@ export async function POST(request) {
       token,
     });
 
-    sendNotification({
+    await sendNotification({
       subject: `Nueva solicitud de férula — ${nombre} ${apellido}`,
       text: [
         `Nombre: ${nombre} ${apellido}`,
@@ -76,8 +76,6 @@ export async function POST(request) {
         `Email: ${email || 'No proporcionado'}`,
         `Comentario: ${comentario || 'Ninguno'}`,
         `Fecha: ${timestamp}`,
-        `─`.repeat(30),
-        `Ver CSV: Blob Storage → donaciones/donaciones.csv`,
       ].join('\n'),
       html: [
         '<h2>Nueva solicitud de férula</h2>',

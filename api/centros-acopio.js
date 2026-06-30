@@ -69,7 +69,7 @@ export async function POST(request) {
       token,
     });
 
-    sendNotification({
+    await sendNotification({
       subject: `Nuevo centro de acopio — ${nombreCentro}`,
       text: [
         `Centro: ${nombreCentro}`,
@@ -79,8 +79,6 @@ export async function POST(request) {
         `Dirección: ${direccion || 'No proporcionada'}`,
         `Comentario: ${comentario || 'Ninguno'}`,
         `Fecha: ${timestamp}`,
-        `─`.repeat(30),
-        `Ver CSV: Blob Storage → centros-acopio/centros.csv`,
       ].join('\n'),
       html: [
         '<h2>Nuevo centro de acopio registrado</h2>',
