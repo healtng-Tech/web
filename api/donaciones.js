@@ -69,9 +69,14 @@ export async function POST(request) {
     });
 
     try {
-      const resend = new Resend(process.env.RESEND_API_KEY);
+      const apiKey = process.env.RESEND_API_KEY;
+      if (!apiKey) {
+        console.error('RESEND_API_KEY no definido en el entorno');
+        return Response.json({ success: true, message: 'Solicitud registrada correctamente (email no configurado)' });
+      }
+      const resend = new Resend(apiKey);
       const to = process.env.NOTIFICATION_EMAIL || 'healtng@gmail.com';
-      await resend.emails.send({
+      const result = await resend.emails.send({
         from: 'Healtng Donaciones <healtng@gmail.com>',
         to,
         subject: `Nueva solicitud de férula — ${nombre} ${apellido}`,
@@ -93,9 +98,10 @@ export async function POST(request) {
           '</table>',
         ].join(''),
       });
-      console.log('Email enviado OK');
+      console.log('Email enviado OK, id:', result?.data?.id || result?.id || 'ok');
     } catch (emailErr) {
       console.error('Error enviando email:', emailErr?.message || emailErr, emailErr?.stack);
+      return Response.json({ success: true, message: `Solicitud guardada. Email error: ${emailErr?.message || 'desconocido'}` });
     }
 
     return Response.json({ success: true, message: 'Solicitud registrada correctamente' });
