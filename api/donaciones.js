@@ -71,13 +71,13 @@ export async function POST(request) {
     try {
       const apiKey = process.env.RESEND_API_KEY;
       if (!apiKey) {
-        console.error('RESEND_API_KEY no definido en el entorno');
-        return Response.json({ success: true, message: 'Solicitud registrada correctamente (email no configurado)' });
+        console.error('RESEND_API_KEY no definido');
+        return Response.json({ success: true, message: 'Solicitud registrada (email no configurado: falta RESEND_API_KEY)' });
       }
       const resend = new Resend(apiKey);
       const to = process.env.NOTIFICATION_EMAIL || 'healtng@gmail.com';
       const result = await resend.emails.send({
-        from: 'Healtng Donaciones <healtng@gmail.com>',
+        from: 'onboarding@resend.dev',
         to,
         subject: `Nueva solicitud de férula — ${nombre} ${apellido}`,
         text: [

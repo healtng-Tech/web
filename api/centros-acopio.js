@@ -70,10 +70,15 @@ export async function POST(request) {
     });
 
     try {
-      const resend = new Resend(process.env.RESEND_API_KEY);
+      const apiKey = process.env.RESEND_API_KEY;
+      if (!apiKey) {
+        console.error('RESEND_API_KEY no definido');
+        return Response.json({ success: true, message: 'Centro registrado (email no configurado: falta RESEND_API_KEY)' });
+      }
+      const resend = new Resend(apiKey);
       const to = process.env.NOTIFICATION_EMAIL || 'healtng@gmail.com';
-      await resend.emails.send({
-        from: 'Healtng Donaciones <healtng@gmail.com>',
+      const result = await resend.emails.send({
+        from: 'onboarding@resend.dev',
         to,
         subject: `Nuevo centro de acopio — ${nombreCentro}`,
         text: [
