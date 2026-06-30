@@ -1,13 +1,14 @@
 import { useState, useEffect } from 'react';
-import { Logo } from '../ui/Logo'; 
+import { Link, useNavigate, useLocation } from 'react-router-dom';
+import { Heart } from 'lucide-react';
+import { Logo } from '../ui/Logo';
 
 const NAV_LINKS = [
-  { label: 'Infraestructura', href: '#infraestructura' },
-  { label: 'Plataforma',       href: '#plataforma'       },
-  { label: 'Soluciones',      href: '#soluciones'       },
+  { label: 'Infraestructura', id: 'infraestructura' },
+  { label: 'Plataforma',       id: 'plataforma' },
+  { label: 'Soluciones',      id: 'soluciones' },
 ];
 
-// ─── Botón CTA desktop ──────────────────────────────────────────────────────
 function NavCTA() {
   return (
     <a
@@ -22,10 +23,24 @@ function NavCTA() {
   );
 }
 
-// ─── Componente principal ───────────────────────────────────────────────────
+function DonateButton({ mobile = false, onClick }) {
+  const baseClasses = mobile
+    ? "flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-gradient-to-r from-rose-600 to-rose-700 text-white text-[15px] font-bold hover:from-rose-600/90 hover:to-rose-700/90 transition-colors shadow-sm"
+    : "inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-rose-600 to-rose-700 text-white text-[13px] font-semibold tracking-[-0.01em] transition-all duration-200 hover:from-rose-600/90 hover:to-rose-700/90 hover:shadow-md active:scale-[0.98] shadow-[0_2px_8px_rgba(225,29,72,0.2)]";
+
+  return (
+    <Link to="/donaciones" onClick={onClick} className={baseClasses}>
+      <Heart className={mobile ? "size-4" : "size-3.5"} />
+      Donar
+    </Link>
+  );
+}
+
 export function Navbar() {
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const navigate = useNavigate();
+  const location = useLocation();
 
   useEffect(() => {
     const handleScroll = () => setScrolled(window.scrollY > 20);
@@ -33,21 +48,31 @@ export function Navbar() {
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleSectionClick = (e, id) => {
+    e.preventDefault();
+    if (location.pathname === '/') {
+      document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+    } else {
+      navigate('/');
+      setTimeout(() => {
+        document.getElementById(id)?.scrollIntoView({ behavior: 'smooth' });
+      }, 120);
+    }
+  };
+
   return (
     <>
       <header className={`fixed top-0 inset-x-0 z-40 transition-all duration-300 ease-out ${scrolled ? 'bg-white/90 backdrop-blur-md border-b border-slate-200/60 shadow-sm' : 'bg-transparent'}`}>
         <nav className="max-w-6xl mx-auto px-6 h-16 flex items-center justify-between">
-          
-          {/* Logo equilibrado a una altura óptica de h-7 (28px) */}
-          <a href="/" aria-label="Healtng — inicio" className="flex items-center select-none group">
-            <Logo className="h-7 w-auto transition-transform duration-200 active:scale-[0.98]" />
-          </a>
 
-          {/* Links desktop */}
+          <Link to="/" aria-label="Healtng — inicio" className="flex items-center select-none group">
+            <Logo className="h-7 w-auto transition-transform duration-200 active:scale-[0.98]" />
+          </Link>
+
           <ul className="hidden md:flex items-center gap-1">
-            {NAV_LINKS.map(({ label, href }) => (
-              <li key={href}>
-                <a href={href} className="px-4 py-2 rounded-full text-[13px] font-semibold text-slate-600 transition-colors duration-150 hover:text-slate-900 hover:bg-slate-50">
+            {NAV_LINKS.map(({ label, id }) => (
+              <li key={id}>
+                <a href={`/#${id}`} onClick={(e) => handleSectionClick(e, id)} className="px-4 py-2 rounded-full text-[13px] font-semibold text-slate-600 transition-colors duration-150 hover:text-slate-900 hover:bg-slate-50">
                   {label}
                 </a>
               </li>
@@ -55,13 +80,13 @@ export function Navbar() {
           </ul>
 
           <div className="hidden md:flex items-center gap-3">
+            <DonateButton />
             <a href="https://app.healtng.com/iniciar-sesion" className="px-4 py-2 rounded-full text-[13px] font-semibold text-slate-600 transition-colors duration-150 hover:text-slate-900 hover:bg-slate-50">
               Inicia sesión
             </a>
             <NavCTA />
           </div>
 
-          {/* Mobile Hamburger */}
           <button type="button" onClick={() => setMobileOpen(v => !v)} className="md:hidden size-10 rounded-xl hover:bg-slate-50 flex flex-col justify-center items-center gap-[5px]" aria-label="Abrir menú">
             {[0, 1, 2].map(i => (
               <span key={i} className={`block h-[1.5px] bg-slate-900 rounded-full transition-all ${i === 0 && mobileOpen ? 'w-5 translate-y-[6.5px] rotate-45' : 'w-5'} ${i === 1 && mobileOpen ? 'w-5 opacity-0' : 'w-4'} ${i === 2 && mobileOpen ? 'w-5 -translate-y-[6.5px] -rotate-45' : 'w-5'}`} />
@@ -70,15 +95,15 @@ export function Navbar() {
         </nav>
       </header>
 
-      {/* Menú mobile */}
       <div className={`fixed inset-0 z-30 md:hidden flex flex-col pt-16 bg-white/95 backdrop-blur-xl transition-all duration-300 ease-out ${mobileOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}`}>
         <nav className="flex flex-col gap-1 px-6 pt-6">
-          {NAV_LINKS.map(({ label, href }) => (
-            <a key={href} href={href} onClick={() => setMobileOpen(false)} className="px-4 py-3.5 rounded-xl text-[15px] font-semibold text-slate-800 hover:bg-slate-50 transition-colors">
+          {NAV_LINKS.map(({ label, id }) => (
+            <a key={id} href={`/#${id}`} onClick={(e) => { handleSectionClick(e, id); setMobileOpen(false); }} className="px-4 py-3.5 rounded-xl text-[15px] font-semibold text-slate-800 hover:bg-slate-50 transition-colors">
               {label}
             </a>
           ))}
           <div className="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3">
+            <DonateButton mobile onClick={() => setMobileOpen(false)} />
             <a href="https://app.healtng.com/iniciar-sesion" onClick={() => setMobileOpen(false)} className="px-4 py-3.5 rounded-xl text-[15px] font-semibold text-slate-500 hover:bg-slate-50 transition-colors">
               Inicia sesión
             </a>

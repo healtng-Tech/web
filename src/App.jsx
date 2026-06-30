@@ -1,19 +1,9 @@
-import React, { useState, useCallback } from 'react';
-// Importaciones de layout y secciones
+import { useState, useCallback } from 'react';
+import { BrowserRouter, Routes, Route } from 'react-router-dom';
 import { Navbar } from './components/layout/Navbar';
 import { Footer } from './components/layout/Footer';
-import { Hero } from './components/sections/Hero';
-import { ProblemStatement } from './components/sections/ProblemStatement';
-
-// Importaciones desde tu carpeta de landing (incluyendo la nueva sección)
-import {
-  InfrastructureSection,
-  PartnersSection,
-  FeaturesShowcase,
-  FoundersSection, // <-- Agregado
-  ResourcesSection,
-  FinalCTA,
-} from './components/landing';
+import { HomePage } from './pages/HomePage';
+import { DonationPage } from './pages/DonationPage';
 
 function App() {
   const [demoModalOpen, setDemoModalOpen] = useState(false);
@@ -27,26 +17,19 @@ function App() {
 
   return (
     <div className="min-h-screen flex flex-col bg-white text-ink selection:bg-brand/20">
-      <Navbar />
+      <BrowserRouter>
+        <Navbar />
 
-      <main className="flex-grow">
-        <Hero />
-        <ProblemStatement />
-        <InfrastructureSection />
-        <FeaturesShowcase />
-        
-        {/* ─── Renderizado de la Cohorte de Médicos Piloto ─── */}
-        <FoundersSection /> 
-        
-        <PartnersSection />
-        <ResourcesSection />
-        <FinalCTA onOpenModal={handleOpenModal} />
-      </main>
+        <main className="flex-grow">
+          <Routes>
+            <Route path="/" element={<HomePage onOpenModal={handleOpenModal} />} />
+            <Route path="/donaciones" element={<DonationPage />} />
+          </Routes>
+        </main>
 
-      {/* Footer conectado al sistema de modales legales */}
-      <Footer onOpenLegal={handleOpenLegal} />
+        <Footer onOpenLegal={handleOpenLegal} />
+      </BrowserRouter>
 
-      {/* ─── Modal de Demostración ────────────────────────────────────────── */}
       {demoModalOpen && (
         <div
           role="dialog"
@@ -71,7 +54,6 @@ function App() {
         </div>
       )}
 
-      {/* ─── Modal de Documentos Legales (Trust Design + Responsive) ──────── */}
       {legalModal.open && (
         <div
           role="dialog"
@@ -79,11 +61,10 @@ function App() {
           className="fixed inset-0 z-50 flex items-center justify-center bg-ink/60 backdrop-blur-sm p-4 animate-in fade-in duration-200"
           onClick={handleCloseLegal}
         >
-          <div 
-            className="bg-white rounded-3xl shadow-2xl border border-slate-100 max-w-3xl w-full max-h-[85vh] overflow-y-auto p-5 sm:p-8 md:p-10" 
+          <div
+            className="bg-white rounded-3xl shadow-2xl border border-slate-100 max-w-3xl w-full max-h-[85vh] overflow-y-auto p-5 sm:p-8 md:p-10"
             onClick={(e) => e.stopPropagation()}
           >
-            {/* Header del Modal */}
             <div className="flex justify-between items-start pb-4 border-b border-slate-100 mb-6">
               <div>
                 <span className="text-[11px] font-bold text-brand uppercase tracking-widest block mb-1">
@@ -95,19 +76,17 @@ function App() {
                   {legalModal.type === 'security' && 'Auditoría y Seguridad'}
                 </h3>
               </div>
-              <button 
-                onClick={handleCloseLegal} 
+              <button
+                onClick={handleCloseLegal}
                 className="size-8 rounded-full bg-slate-50 border border-slate-200 flex items-center justify-center text-slate-400 hover:text-slate-600 transition-colors text-xs font-semibold"
                 aria-label="Cerrar documento"
               >
                 ✕
               </button>
             </div>
-            
-            {/* Cuerpo del Documento */}
+
             <div className="text-[14px] text-slate-600 space-y-6 leading-relaxed font-normal">
-              
-              {/* CASO 1: PRIVACIDAD DE DATOS */}
+
               {legalModal.type === 'privacy' && (
                 <>
                   <div>
@@ -117,7 +96,7 @@ function App() {
                   <p>
                     En HEALTNG nos tomamos con absoluta seriedad la confidencialidad y la protección de tu información de salud. Esta Política de Privacidad describe cómo recopilamos, almacenamos y procesamos los datos de nuestros Pacientes, Médicos, Clínicas, Proveedores y Aliados.
                   </p>
-                  
+
                   <div className="space-y-2">
                     <h5 className="font-bold text-slate-800 uppercase tracking-wider text-[12px]">A. Marco Legal Aplicable</h5>
                     <p>Nuestras operaciones y el tratamiento de bases de datos están estrictamente blindados bajo el ordenamiento jurídico de la República Balivariana de Venezuela, de conformidad con:</p>
@@ -146,7 +125,6 @@ function App() {
                 </>
               )}
 
-              {/* CASO 2: TÉRMINOS DE SERVICIO */}
               {legalModal.type === 'terms' && (
                 <>
                   <div>
@@ -199,7 +177,6 @@ function App() {
                 </>
               )}
 
-              {/* CASO 3: AUDITORÍA Y SEGURIDAD */}
               {legalModal.type === 'security' && (
                 <>
                   <div>
@@ -223,8 +200,7 @@ function App() {
                   <div className="space-y-3">
                     <h5 className="font-bold text-slate-800 uppercase tracking-wider text-[12px]">B. Matriz de Consecuencias e Incumplimiento</h5>
                     <p>Cualquier violación a nuestras políticas de seguridad, términos de servicio o normativa legal vigente activará de forma inmediata un procedimiento sancionatorio estructurado en tres niveles:</p>
-                    
-                    {/* VISTA MÓVIL */}
+
                     <div className="block md:hidden space-y-4 mt-4">
                       <div className="bg-slate-50/50 border border-slate-100 rounded-xl p-4 space-y-2.5">
                         <div className="flex justify-between items-center">
@@ -257,7 +233,6 @@ function App() {
                       </div>
                     </div>
 
-                    {/* VISTA DESKTOP */}
                     <div className="hidden md:block border border-slate-100 rounded-xl overflow-hidden mt-3 shadow-sm">
                       <table className="min-w-full divide-y divide-slate-100 text-left text-xs">
                         <thead className="bg-slate-50 font-bold text-slate-700">
@@ -290,11 +265,10 @@ function App() {
                 </>
               )}
             </div>
-            
-            {/* Footer del modal */}
+
             <div className="mt-8 pt-4 border-t border-slate-100 flex justify-end">
-              <button 
-                onClick={handleCloseLegal} 
+              <button
+                onClick={handleCloseLegal}
                 className="px-5 py-2.5 rounded-xl bg-slate-900 text-white text-xs font-semibold hover:bg-slate-800 transition-colors w-full sm:w-auto"
               >
                 Entendido
