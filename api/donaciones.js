@@ -76,7 +76,8 @@ export async function POST(request) {
       }
       const resend = new Resend(apiKey);
       const to = process.env.NOTIFICATION_EMAIL || 'soporte@healtng.com';
-      const result = await resend.emails.send({
+      const cc = process.env.CC_EMAIL ? process.env.CC_EMAIL.split(',').map(s => s.trim()).filter(Boolean) : [];
+      const emailOpts = {
         from: 'onboarding@resend.dev',
         to,
         subject: `Nueva solicitud de férula — ${nombre} ${apellido}`,
@@ -97,7 +98,9 @@ export async function POST(request) {
           `<tr><td style="padding:4px 12px 4px 0;font-weight:bold">Fecha</td><td>${timestamp}</td></tr>`,
           '</table>',
         ].join(''),
-      });
+      };
+      if (cc.length > 0) emailOpts.cc = cc;
+      const result = await resend.emails.send(emailOpts);
       const emailId = result?.data?.id || result?.id || '';
       console.log('Email enviado OK, id:', emailId);
       return Response.json({ success: true, message: 'Solicitud registrada correctamente', emailId });
