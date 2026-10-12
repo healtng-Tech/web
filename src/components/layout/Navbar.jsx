@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Heart } from 'lucide-react';
 import { Logo } from '../ui/Logo';
 
 const NAV_LINKS = [
@@ -20,19 +19,6 @@ function NavCTA() {
         <path fillRule="evenodd" d="M6.22 4.22a.75.75 0 0 1 1.06 0l3.25 3.25a.75.75 0 0 1 0 1.06l-3.25 3.25a.75.75 0 0 1-1.06-1.06L9.19 8 6.22 5.03a.75.75 0 0 1 0-1.06Z" clipRule="evenodd" />
       </svg>
     </a>
-  );
-}
-
-function DonateButton({ mobile = false, onClick }) {
-  const baseClasses = mobile
-    ? "flex items-center justify-center gap-2 px-6 py-4 rounded-2xl bg-gradient-to-r from-rose-600 to-rose-700 text-white text-[15px] font-bold hover:from-rose-600/90 hover:to-rose-700/90 transition-colors shadow-sm"
-    : "inline-flex items-center gap-2 px-5 py-2.5 rounded-full bg-gradient-to-r from-rose-600 to-rose-700 text-white text-[13px] font-semibold tracking-[-0.01em] transition-all duration-200 hover:from-rose-600/90 hover:to-rose-700/90 hover:shadow-md active:scale-[0.98] shadow-[0_2px_8px_rgba(225,29,72,0.2)]";
-
-  return (
-    <Link to="/donaciones" onClick={onClick} className={baseClasses}>
-      <Heart className={mobile ? "size-4" : "size-3.5"} />
-      Donar
-    </Link>
   );
 }
 
@@ -80,7 +66,6 @@ export function Navbar() {
           </ul>
 
           <div className="hidden md:flex items-center gap-3">
-            <DonateButton />
             <a href="https://app.healtng.com/iniciar-sesion" className="px-4 py-2 rounded-full text-[13px] font-semibold text-slate-600 transition-colors duration-150 hover:text-slate-900 hover:bg-slate-50">
               Inicia sesión
             </a>
@@ -103,7 +88,6 @@ export function Navbar() {
             </a>
           ))}
           <div className="mt-4 pt-4 border-t border-slate-100 flex flex-col gap-3">
-            <DonateButton mobile onClick={() => setMobileOpen(false)} />
             <a href="https://app.healtng.com/iniciar-sesion" onClick={() => setMobileOpen(false)} className="px-4 py-3.5 rounded-xl text-[15px] font-semibold text-slate-500 hover:bg-slate-50 transition-colors">
               Inicia sesión
             </a>

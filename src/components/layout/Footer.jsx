@@ -1,6 +1,5 @@
 import React, { memo } from 'react';
-import { Link, useNavigate, useLocation } from 'react-router-dom';
-import { Heart } from 'lucide-react';
+import { useNavigate, useLocation } from 'react-router-dom';
 import logoColor from '../../assets/healtng-logo.svg';
 
 export const Footer = memo(function Footer({ onOpenLegal }) {
@@ -72,10 +71,6 @@ export const Footer = memo(function Footer({ onOpenLegal }) {
             <h3 className="text-[12px] font-bold tracking-widest uppercase text-slate-900 mb-5">Compañía</h3>
             <ul className="flex flex-col gap-4">
               <li><a href="/#inicio" onClick={(e) => handleSectionClick(e, 'inicio')} className="text-[14px] text-slate-500 hover:text-[#002EE5] font-medium transition-colors">Sobre nosotros</a></li>
-              <li><Link to="/donaciones" className="text-[14px] text-slate-500 hover:text-rose-600 font-medium transition-colors inline-flex items-center gap-1.5">
-                <Heart className="size-3.5" />
-                Donaciones
-              </Link></li>
               <li><a href="mailto:info@healtng.com" className="text-[14px] text-slate-500 hover:text-[#002EE5] font-medium transition-colors">Contacto comercial</a></li>
               <li><a href="mailto:soporte@healtng.com" className="text-[14px] text-slate-500 hover:text-[#002EE5] font-medium transition-colors">Soporte técnico</a></li>
             </ul>
